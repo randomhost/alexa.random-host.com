@@ -1,0 +1,156 @@
+{
+    "common": {
+        "appId": ""
+    },
+    "response": {
+        "greeting": [
+            "Ja bitte?",
+            "Wie kann ich helfen?",
+            "Ich höre?",
+            "Was gibt's Chef?",
+            "Ja Sir?",
+            "Erwarte Befehle."
+        ],
+        "help": [
+            "Nach folgenden Dingen kannst du mich fragen:",
+            "Frag mich nach:",
+            "Ich kann dir die folgenden Dinge nennen:",
+            "Ich kann die folgenden Informationen bereitstellen:",
+            "Folgende Informationen sind verfügbar:"
+        ],
+        "cancel": [
+            "Dann halt nicht.",
+            "War das falsch?",
+            "Okay.",
+            "Na gut.",
+            "Doch nicht?",
+            "Wie du willst.",
+            "Wie du wünscht.",
+            "Verstanden.",
+            "Bestätigt."
+        ],
+        "stop": [
+            "Stets zu Diensten.",
+            "Gern geschehen.",
+            "Machs gut.",
+            "Ciao.",
+            "Alles klar.",
+            "Und tschüss.",
+            "Jawohl Sir.",
+            "Programm beendet.",
+            "Mit Vergnügen.",
+            "Immer wieder gern.",
+            "Hat mich gefreut.",
+            "Gerne wieder.",
+            "Zu deinen Diensten.",
+            "Jederzeit."
+        ],
+        "minecraftPlayerCount": {
+            "noPlayers1": [
+                "Es sind keine Spieler auf dem Minecraft Server.",
+                "Der Minecraft Server ist leer.",
+                "Es ist niemand dort.",
+                "Lass mich kurz zählen. Genau null.",
+                "Wären da noch weniger Spieler, müsste man welche einladen damit niemand drauf ist."
+            ],
+            "noPlayers2": [
+                "Keine Zeugen für deine Untaten.",
+                "Du kannst also beruhigt pupsen und niemand wird es hören oder riechen.",
+                "Soll ich mitspielen?",
+                "Das könnte langweilig werden."
+            ],
+            "onePlayer1": [
+                "Es ist ein einzelner einsamer Spieler dort.",
+                "Eine einzelne arme Seele hat sich dort hin verirrt.",
+                "Ich spüre eine Präsenz. Aber halt nur eine.",
+                "Lass mich kurz zählen. Genau einer.",
+                "Es könnten mehr sein. Es ist nur einer.",
+                "Einer."
+            ],
+            "onePlayer2": [
+                "Er würde sich sicher freuen wenn du vorbei kommst und ihn lieb drückst.",
+                "Was der da wohl so ganz alleine macht?",
+                "Hat der keine Freunde?",
+                "Wie traurig."
+            ],
+            "twoPlayers1": [
+                "Es sind genau zwei Spieler dort.",
+                "Ich erkenne zwei Spieler.",
+                "Lass mich kurz zählen. Genau zwei.",
+                "Es könnten mehr sein. Aber es sind immerhin zwei.",
+                "Wie hieß doch gleich die Zahl direkt nach der eins?",
+                "Es sind so viele, wie du Augen hast. Es sei denn du bist ein Zyklop. Dann nicht.",
+                "Zwei."
+            ],
+            "twoPlayers2": [
+                "Ich will gar nicht wissen was die gerade machen.",
+                "Ob die Wohl ein Paar sind?",
+                "Die machen bestimmt komische Dinge.",
+                "Wie romantisch.",
+                "Ob man da wohl stören darf?",
+                "Das müssen coole Leute sein.",
+                "Das müssen die coolen Kids sein"
+            ],
+            "nPlayers1": [
+                "Es sind %u Spieler auf dem Server.",
+                "Halt dich fest! Es sind%u!",
+                "Ich erkenne %u Spieler.",
+                "Lass mich kurz zählen. Es sind mindestens %u Stück.",
+                "Es sind %u an der Zahl.",
+                "%u!"
+            ],
+            "nPlayers2": [
+                "Die feiern bestimmt eine Party.",
+                "Wie unerwartet!",
+                "Damit habe ich gar nicht gerechnet!",
+                "Vielleicht gibt es was umsonst?",
+                "Ich habe es auch erst nicht geglaubt.",
+                "Das kann nicht stimmen."
+            ]
+        },
+        "minecraftPlayerList": {
+            "noPlayers1": [
+                "Es sind keine Spieler auf dem Minecraft Server.",
+                "Der Minecraft Server ist leer.",
+                "Es ist niemand dort.",
+                "Lass mich kurz zählen. Genau null.",
+                "Wären da noch weniger Spieler, müsste man welche einladen damit niemand drauf ist."
+            ],
+            "noPlayers2": [
+                "Keine Zeugen für deine Untaten.",
+                "Du kannst also beruhigt pupsen und niemand wird es hören oder riechen.",
+                "Soll ich mitspielen?",
+                "Das könnte langweilig werden."
+            ],
+            "onePlayer1": [
+                "%s ist der einzige Spieler dort.",
+                "Nur %s hat sich dort hin verirrt.",
+                "%s ist dort ganz alleine."
+            ],
+            "onePlayer2": [
+                "%s würde sich sicher über Besuch freuen.",
+                "Was %s da wohl macht?",
+                "Hat %s keine Freunde?",
+                "Wie traurig."
+            ],
+            "nPlayers": [
+                "Auf dem Minecraft Server spielen zur Zeit die folgenden Spieler:"
+            ]
+        },
+        "minecraftVersion": [
+            "Auf dem Server läuft aktuell Version %s.",
+            "Es wird Minecraft Version %s ausgeführt.",
+            "Version %s.",
+            "Es läuft Version %s."
+        ],
+        "unsupported": [
+            "Tut mir leid. Ich weiß leider nicht was du von mir willst.",
+            "Entschuldige. Diese Anfrage verstehe ich nicht.",
+            "Dabei kann ich dir leider nicht helfen.",
+            "Irgend etwas läuft hier nicht richtig."
+        ],
+        "randomFact": [
+            "Hier könnten deine RandomFacts stehen."
+        ]
+    }
+}

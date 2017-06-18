@@ -1,0 +1,8 @@
+.build
+.idea
+.tmp
+composer.lock
+nbproject
+review
+vendor
+src/data/config.json
