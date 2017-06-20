@@ -25,7 +25,10 @@ class Help extends AbstractResponder implements ResponderInterface
             "In der Rubrik Minecraft:",
             "Anzahl der Spieler,",
             "Spieler Liste,",
-            "Version des Servers.",
+            "oder Version des Servers.",
+            "In der Rubrik System:",
+            "System Updates,",
+            "oder System Uptime.",
             "In der Rubrik Sonstiges:",
             "Random Facts.",
         );

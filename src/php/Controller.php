@@ -13,6 +13,8 @@ use randomhost\Alexa\Responder\Intent\Builtin\Stop;
 use randomhost\Alexa\Responder\Intent\Minecraft\PlayerCount as MinecraftPlayerCount;
 use randomhost\Alexa\Responder\Intent\Minecraft\PlayerList as MinecraftPlayerList;
 use randomhost\Alexa\Responder\Intent\Minecraft\Version as MinecraftVersion;
+use randomhost\Alexa\Responder\Intent\System\Updates;
+use randomhost\Alexa\Responder\Intent\System\Uptime;
 use randomhost\Alexa\Responder\Intent\RandomFact;
 use randomhost\Alexa\Responder\Launch\Greeting;
 use randomhost\Alexa\Responder\ResponderInterface;
@@ -139,7 +141,10 @@ class Controller
                 return $this->buildResponderForMinecraftIntent($request->intentName, $mcData);
             case 'RandomFactIntent':
                 return new RandomFact();
-
+            case 'UptimeIntent':
+                return new Uptime();
+            case 'UpdatesIntent':
+                return new Updates();
             default:
                 trigger_error(
                     sprintf(

@@ -149,6 +149,11 @@
             "Dabei kann ich dir leider nicht helfen.",
             "Irgend etwas läuft hier nicht richtig."
         ],
+        "uptime": [
+            "Die Uptime beträgt %s.",
+            "Es sind genau %s.",
+            "Im Moment sind es %s."
+        ],
         "randomFact": [
             "Hier könnten deine RandomFacts stehen."
         ]
