@@ -28,7 +28,12 @@ class Stop extends AbstractResponder implements ResponderInterface
         }
 
         $this->response
-            ->respond($this->randomizeResponseText($responses))
+            ->respondSSML(
+                sprintf(
+                    $this->withSound(self::SOUND_STOP, '%s'),
+                    $this->randomizeResponseText($responses)
+                )
+            )
             ->endSession(true);
 
         return $this;

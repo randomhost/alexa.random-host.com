@@ -23,10 +23,11 @@ class Version extends AbstractMinecraft implements ResponderInterface
     {
         if (!is_array($this->data) || !array_key_exists('version', $this->data)) {
             $this->response
-                ->respond('Tut mir leid. Der Minecraft Server hat leider nicht geantwortet.')
-                ->withCard(
-                    'Fehler',
-                    'Der Minecraft Server hat nicht geantwortet.'
+                ->respondSSML(
+                    $this->withSound(
+                        self::SOUND_ERROR,
+                        'Tut mir leid. Der Minecraft Server hat leider nicht geantwortet.'
+                    )
                 )
                 ->endSession(true);
 
@@ -41,7 +42,12 @@ class Version extends AbstractMinecraft implements ResponderInterface
         }
 
         $this->response
-            ->respond(sprintf($this->randomizeResponseText($responses), $version))
+            ->respondSSML(
+                $this->withSound(
+                    self::SOUND_CONFIRM,
+                    sprintf($this->randomizeResponseText($responses), $version)
+                )
+            )
             ->endSession(false);
 
         return $this;

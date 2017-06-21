@@ -32,7 +32,12 @@ class Greeting extends AbstractResponder implements ResponderInterface
         }
 
         $this->response
-            ->respond($this->randomizeResponseText($greetings))
+            ->respondSSML(
+                sprintf(
+                    $this->withSound(self::SOUND_READY, '%s'),
+                    $this->randomizeResponseText($greetings)
+                )
+            )
             ->endSession(false);
 
         return $this;

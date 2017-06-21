@@ -2,6 +2,9 @@
     "common": {
         "appId": ""
     },
+    "audio": {
+        "baseUrl": "https://example.com/audio/"
+    },
     "response": {
         "greeting": [
             "Ja bitte?",

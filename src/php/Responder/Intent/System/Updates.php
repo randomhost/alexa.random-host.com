@@ -2,10 +2,8 @@
 
 namespace randomhost\Alexa\Responder\Intent\System;
 
-use DateTime;
 use randomhost\Alexa\Responder\AbstractResponder;
 use randomhost\Alexa\Responder\ResponderInterface;
-use RuntimeException;
 
 /**
  * Updates Intent.
@@ -27,7 +25,7 @@ class Updates extends AbstractResponder implements ResponderInterface
         $updates = $this->fetchPackageUpdates();
 
         $this->response
-            ->respond($updates)
+            ->respondSSML($updates)
             ->endSession(false);
 
         return $this;
@@ -49,28 +47,39 @@ class Updates extends AbstractResponder implements ResponderInterface
         );
 
         if ($updates !== 1) {
-            $response = 'Es stehen keine Updates zur Verfügung.';
-        } else {
-            $pkgUpgraded = (int) $matches[1];
-            $pkgNew = (int) $matches[2];
-            $pkgRemove = (int) $matches[3];
-            $pkgNotUpgraded = (int) $matches[4];
+            return $this->withSound(
+                self::SOUND_ERROR,
+                'Die verfügbaren Updates konnten leider nicht ermittelt werden.'
+            );
+        }
 
+        $pkgUpgraded = (int)$matches[1];
+        $pkgNew = (int)$matches[2];
+        $pkgRemove = (int)$matches[3];
+        $pkgNotUpgraded = (int)$matches[4];
 
-            $strUpgraded = ($pkgUpgraded === 1) ? 'ein Update' : "${pkgUpgraded} Updates";
-            $strNew = ($pkgNew === 1) ? 'eine Neuinstallation' : "${pkgNew} Neuinstallationen";
-            $strRemove = ($pkgRemove === 1) ? 'eine Entfernung' : "${pkgRemove} Entfernungen";
-            $strNotUpgraded = ($pkgNotUpgraded === 1) ? 'wird 1 Paket' : "werden ${pkgNotUpgraded} Pakete";
+        if ($pkgUpgraded === 0 && $pkgNew === 0 && $pkgRemove === 0 && $pkgNotUpgraded === 0) {
+            return $this->withSound(
+                self::SOUND_CONFIRM,
+                'Es stehen keine Updates zur Verfügung.'
+            );
+        }
 
-            $response = sprintf(
+        $strUpgraded = ($pkgUpgraded === 1) ? 'ein Update' : "${pkgUpgraded} Updates";
+        $strNew = ($pkgNew === 1) ? 'eine Neuinstallation' : "${pkgNew} Neuinstallationen";
+        $strRemove = ($pkgRemove === 1) ? 'eine Entfernung' : "${pkgRemove} Entfernungen";
+        $strNotUpgraded = ($pkgNotUpgraded === 1) ? 'wird 1 Paket'
+            : "werden ${pkgNotUpgraded} Pakete";
+
+        return $this->withSound(
+            self::SOUND_CONFIRM,
+            sprintf(
                 'Es stehen %s, %s und %s aus. Dabei %s explizit nicht aktualisiert.',
                 $strUpgraded,
                 $strNew,
                 $strRemove,
                 $strNotUpgraded
-            );
-        }
-
-        return $response;
+            )
+        );
     }
 }

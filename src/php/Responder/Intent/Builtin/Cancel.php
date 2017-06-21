@@ -28,8 +28,13 @@ class Cancel extends AbstractResponder implements ResponderInterface
         }
 
         $this->response
-            ->respond($this->randomizeResponseText($responses))
-            ->endSession(true);
+            ->respondSSML(
+                sprintf(
+                    $this->withSound(self::SOUND_STOP, '%s'),
+                    $this->randomizeResponseText($responses)
+                )
+            )
+            ->endSession(false);
 
         return $this;
     }

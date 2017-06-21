@@ -27,6 +27,7 @@ class Help extends AbstractResponder implements ResponderInterface
             "Spieler Liste,",
             "oder Version des Servers.",
             "In der Rubrik System:",
+            "System Auslastung,",
             "System Updates,",
             "oder System Uptime.",
             "In der Rubrik Sonstiges:",
@@ -46,10 +47,12 @@ class Help extends AbstractResponder implements ResponderInterface
         }
 
         $this->response
-            ->respond(
-                $this->randomizeResponseText($responses)
-                ."\r\n".
-                implode("\r\n", $this->helpOutput)
+            ->respondSSML(
+                sprintf(
+                    $this->withSound(self::SOUND_CONFIRM, "%s\r\n%s"),
+                    $this->randomizeResponseText($responses),
+                    implode("\r\n", $this->helpOutput)
+                )
             )
             ->endSession(false);
 

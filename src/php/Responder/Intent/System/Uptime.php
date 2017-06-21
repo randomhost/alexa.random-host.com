@@ -32,7 +32,13 @@ class Uptime extends AbstractResponder implements ResponderInterface
         $uptime = $this->fetchSystemUptime();
 
         $this->response
-            ->respond(sprintf($this->randomizeResponseText($responses), $uptime))
+            ->respondSSML(
+                $this->withSound(
+                    self::SOUND_CONFIRM,
+                    sprintf($this->randomizeResponseText($responses), $uptime)
+                )
+
+            )
             ->endSession(false);
 
         return $this;

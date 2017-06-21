@@ -17,6 +17,7 @@ Features
 * *Alexa, ask random-host **which version** is the **minecraft server**?*
 * *Alexa, ask random-host for **a random fact**.*
 * *Alexa, ask random-host for the **system uptime**.*
+* *Alexa, ask random-host for the **system load**.*
 * *Alexa, ask random-host for **available package updates**.*
 
 Planned Features

@@ -23,10 +23,11 @@ class PlayerCount extends AbstractMinecraft implements ResponderInterface
     {
         if (!is_array($this->data) || !array_key_exists('player_count', $this->data)) {
             $this->response
-                ->respond('Tut mir leid. Der Minecraft Server hat leider nicht geantwortet.')
-                ->withCard(
-                    'Fehler',
-                    'Der Minecraft Server hat nicht geantwortet.'
+                ->respondSSML(
+                    $this->withSound(
+                        self::SOUND_ERROR,
+                        'Tut mir leid. Der Minecraft Server hat leider nicht geantwortet.'
+                    )
                 )
                 ->endSession(true);
 
@@ -52,43 +53,55 @@ class PlayerCount extends AbstractMinecraft implements ResponderInterface
         switch (true) {
             case ($playerCount <= 0):
                 $this->response
-                    ->respond(
-                        $this->randomizeResponseText($responses['noPlayers1'])
-                        ."\r\n".
-                        $this->randomizeResponseText($responses['noPlayers2'])
+                    ->respondSSML(
+                        $this->withSound(
+                            self::SOUND_CONFIRM,
+                            $this->randomizeResponseText($responses['noPlayers1'])
+                            ."\r\n".
+                            $this->randomizeResponseText($responses['noPlayers2'])
+                        )
                     )
                     ->endSession(false);
 
                 return $this;
             case ($playerCount === 1):
                 $this->response
-                    ->respond(
-                        $this->randomizeResponseText($responses['onePlayer1'])
-                        .".\r\n".
-                        $this->randomizeResponseText($responses['onePlayer2'])
-
+                    ->respondSSML(
+                        $this->withSound(
+                            self::SOUND_CONFIRM,
+                            $this->randomizeResponseText($responses['onePlayer1'])
+                            .".\r\n".
+                            $this->randomizeResponseText($responses['onePlayer2'])
+                        )
                     )
                     ->endSession(false);
 
                 return $this;
             case ($playerCount === 2):
                 $this->response
-                    ->respond(
-                        $this->randomizeResponseText($responses['twoPlayers1'])
-                        ."\r\n".
-                        $this->randomizeResponseText($responses['twoPlayers2'])
-
+                    ->respondSSML(
+                        $this->withSound(
+                            self::SOUND_CONFIRM,
+                            $this->randomizeResponseText($responses['twoPlayers1'])
+                            ."\r\n".
+                            $this->randomizeResponseText($responses['twoPlayers2'])
+                        )
                     )
                     ->endSession(false);
 
                 return $this;
             default:
                 $this->response
-                    ->respond(
-                        sprintf($this->randomizeResponseText($responses['nPlayers1']), $playerCount)
-                        ."\r\n".
-                        $this->randomizeResponseText($responses['nPlayers2'])
-
+                    ->respondSSML(
+                        $this->withSound(
+                            self::SOUND_CONFIRM,
+                            sprintf(
+                                $this->randomizeResponseText($responses['nPlayers1']),
+                                $playerCount
+                            )
+                            ."\r\n".
+                            $this->randomizeResponseText($responses['nPlayers2'])
+                        )
                     )
                     ->endSession(false);
 

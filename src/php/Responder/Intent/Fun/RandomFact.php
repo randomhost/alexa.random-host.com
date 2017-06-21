@@ -1,6 +1,6 @@
 <?php
 
-namespace randomhost\Alexa\Responder\Intent;
+namespace randomhost\Alexa\Responder\Intent\Fun;
 
 use randomhost\Alexa\Responder\AbstractResponder;
 use randomhost\Alexa\Responder\ResponderInterface;
@@ -25,9 +25,13 @@ class RandomFact extends AbstractResponder implements ResponderInterface
         $randomFacts = $this->config->get('response', 'randomFact');
         if (is_null($randomFacts) || empty($randomFacts)) {
             $this->response
-                ->respond(
-                    'Es wurden leider keine Facts configuriert. '.
-                    'Kann ich dir sonst irgendwie helfen?'
+                ->respondSSML(
+                    $this->withSound(
+                        self::SOUND_ERROR,
+                        'Es wurden leider keine Facts configuriert. '.
+                        'Kann ich dir sonst irgendwie helfen?'
+                    )
+
                 )
                 ->endSession(false);
 
@@ -35,7 +39,12 @@ class RandomFact extends AbstractResponder implements ResponderInterface
         }
 
         $this->response
-            ->respond($this->randomizeResponseText($randomFacts))
+            ->respondSSML(
+                $this->withSound(
+                    self::SOUND_CONFIRM,
+                    $this->randomizeResponseText($randomFacts)
+                )
+            )
             ->endSession(false);
 
         return $this;
