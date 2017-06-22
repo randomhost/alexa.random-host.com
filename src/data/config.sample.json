@@ -7,6 +7,7 @@
     },
     "response": {
         "greeting": [
+            "Ja Schatz?",
             "Ja bitte?",
             "Wie kann ich helfen?",
             "Ich höre?",
@@ -146,16 +147,16 @@
             "Version %s.",
             "Es läuft Version %s."
         ],
+        "uptime": [
+            "Die Uptime beträgt %s.",
+            "Es sind genau %s.",
+            "Im Moment sind es %s."
+        ],
         "unsupported": [
             "Tut mir leid. Ich weiß leider nicht was du von mir willst.",
             "Entschuldige. Diese Anfrage verstehe ich nicht.",
             "Dabei kann ich dir leider nicht helfen.",
             "Irgend etwas läuft hier nicht richtig."
-        ],
-        "uptime": [
-            "Die Uptime beträgt %s.",
-            "Es sind genau %s.",
-            "Im Moment sind es %s."
         ],
         "randomFact": [
             "Hier könnten deine RandomFacts stehen."

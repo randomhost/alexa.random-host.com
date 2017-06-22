@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use randomhost\Alexa\Request\IntentRequest;
 use randomhost\Alexa\Request\LaunchRequest;
 use randomhost\Alexa\Request\Request as Request;
+use randomhost\Alexa\Request\SessionEndedRequest;
 use randomhost\Alexa\Responder\Intent\Builtin\Cancel;
 use randomhost\Alexa\Responder\Intent\Builtin\Help;
 use randomhost\Alexa\Responder\Intent\Builtin\Stop;
@@ -63,25 +64,31 @@ class Controller
             switch (true) {
                 case ($request instanceof IntentRequest):
                     $responder = $this->buildResponderForIntentRequest($request);
+                    $this->sendResponse($responder);
                     break;
                 case ($request instanceof LaunchRequest):
                     $responder = new Greeting();
+                    $this->sendResponse($responder);
+                    break;
+                case ($request instanceof SessionEndedRequest):
+                    // log sessions which ended due to processing errors
+                    if ($request->reason === 'ERROR') {
+                        trigger_error(
+                            'Session ended with error',
+                            E_USER_WARNING
+                        );
+                    }
+
+                    $this->renderResponse(null);
                     break;
                 default:
                     trigger_error(
                         'Unsupported request type '.var_export(get_class($request), true),
-                        E_USER_NOTICE
+                        E_USER_WARNING
                     );
-                    $responder = new Unsupported();
+
+                    $this->renderResponse(null);
             }
-
-            $responder
-                ->setConfiguration($this->configuration)
-                ->setResponse($this->response)
-                ->run();
-
-            $this->sendResponse();
-
         } catch (Exception $e) {
             trigger_error($e->getMessage());
         }
@@ -156,7 +163,8 @@ class Controller
                     sprintf(
                         'Unsupported intent name %s ',
                         var_export($request->intentName, true)
-                    )
+                    ),
+                    E_USER_WARNING
                 );
 
                 return new Unsupported();
@@ -190,12 +198,29 @@ class Controller
     }
 
     /**
-     * Sends the response.
+     * Runs the given responder and renders the response.
+     *
+     * @param ResponderInterface $responder ResponderInterface implementation.
      */
-    protected function sendResponse()
+    protected function sendResponse(ResponderInterface $responder)
+    {
+        $responder
+            ->setConfiguration($this->configuration)
+            ->setResponse($this->response)
+            ->run();
+
+        $this->renderResponse($this->response->render());
+    }
+
+    /**
+     * Renders the given data as JSON string.
+     *
+     * @param mixed $data Response data.
+     */
+    protected function renderResponse($data)
     {
         header('Content-Type: application/json');
-        echo json_encode($this->response->render());
+        echo json_encode($data);
         exit;
     }
 }

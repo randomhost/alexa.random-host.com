@@ -5,4 +5,6 @@ composer.lock
 nbproject
 review
 vendor
-src/data/config.json
+src/data/*
+!src/data/config.sample.json
+!src/data/model.json
