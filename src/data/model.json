@@ -1,0 +1,111 @@
+{
+    "intents": [
+        {
+            "name": "AMAZON.CancelIntent",
+            "samples": [
+                "Egal",
+                "Abbruch",
+                "Vergiss es",
+                "Hat sich erledigt"
+            ]
+        },
+        {
+            "name": "AMAZON.HelpIntent",
+            "samples": [
+                "Hilfe",
+                "Welche Befehle gibt es",
+                "Was kannst du"
+            ]
+        },
+        {
+            "name": "AMAZON.StopIntent",
+            "samples": [
+                "Danke",
+                "Das wars",
+                "Das wäre dann alles",
+                "Doch nicht",
+                "Wegtreten",
+                "Programm beenden"
+            ]
+        },
+        {
+            "name": "LoadIntent",
+            "samples": [
+                "Wie ist die Systemauslastung",
+                "Wie hoch ist die Load",
+                "Wie hoch ist die Auslastung",
+                "Wie ist die Load",
+                "Wie ist die Auslastung"
+            ],
+            "slots": []
+        },
+        {
+            "name": "MinecraftPlayerCountIntent",
+            "samples": [
+                "Wie viele Spieler sind auf dem Minecraft Server",
+                "Wie ist die Spieler Anzahl auf dem Mincraft Server",
+                "Wie viele Leute spielen auf dem Minecraft Server"
+            ],
+            "slots": []
+        },
+        {
+            "name": "MinecraftPlayerListIntent",
+            "samples": [
+                "Wer spielt auf dem Minecraft Server",
+                "Welche Spieler sind auf dem Minecraft Server",
+                "Wer ist auf dem Minecraft Server"
+            ],
+            "slots": []
+        },
+        {
+            "name": "MinecraftVersionIntent",
+            "samples": [
+                "Welche Version läuft auf dem Minecraft Server",
+                "Welche Minecraft Version läuft",
+                "Was ist die Minecraft Version"
+            ],
+            "slots": []
+        },
+        {
+            "name": "RandomFactIntent",
+            "samples": [
+                "Gib mir einen Random Fact",
+                "Nenne einen Random Fact",
+                "Random Fact bitte"
+            ],
+            "slots": []
+        },
+        {
+            "name": "SurpriseIntent",
+            "samples": [
+                "Überrasche mich",
+                "Mache etwas lustiges",
+                "Tue etwas lustiges",
+                "Tue etwas unerwartetes"
+            ],
+            "slots": []
+        },
+        {
+            "name": "UpdatesIntent",
+            "samples": [
+                "Welche System Updates stehen an",
+                "Gibt es Paket Updates",
+                "Welche Package Updates gibt es",
+                "Stehen Updates an",
+                "Wie viele Updates sind verfügbar"
+            ],
+            "slots": []
+        },
+        {
+            "name": "UptimeIntent",
+            "samples": [
+                "Wie ist die System Uptime",
+                "Wie lange läuft der Server",
+                "Wie lange läuft das System",
+                "Seit wann läuft das System",
+                "Seit wann läuft der Server"
+            ],
+            "slots": []
+        }
+    ]
+}
