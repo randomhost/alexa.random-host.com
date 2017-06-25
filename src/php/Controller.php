@@ -4,10 +4,11 @@ namespace randomhost\Alexa;
 
 use Exception;
 use InvalidArgumentException;
-use randomhost\Alexa\Request\IntentRequest;
-use randomhost\Alexa\Request\LaunchRequest;
+use randomhost\Alexa\Request\Factory as RequestFactory;
 use randomhost\Alexa\Request\Request as Request;
-use randomhost\Alexa\Request\SessionEndedRequest;
+use randomhost\Alexa\Request\Type\Intent;
+use randomhost\Alexa\Request\Type\Launch;
+use randomhost\Alexa\Request\Type\SessionEnded;
 use randomhost\Alexa\Responder\Intent\Builtin\Cancel;
 use randomhost\Alexa\Responder\Intent\Builtin\Help;
 use randomhost\Alexa\Responder\Intent\Builtin\Stop;
@@ -62,17 +63,17 @@ class Controller
             $request = $this->buildRequest($rawRequest);
 
             switch (true) {
-                case ($request instanceof IntentRequest):
+                case ($request instanceof Intent):
                     $responder = $this->buildResponderForIntentRequest($request);
                     $this->sendResponse($responder);
                     break;
-                case ($request instanceof LaunchRequest):
+                case ($request instanceof Launch):
                     $responder = new Greeting();
                     $this->sendResponse($responder);
                     break;
-                case ($request instanceof SessionEndedRequest):
+                case ($request instanceof SessionEnded):
                     // log sessions which ended due to processing errors
-                    if ($request->reason === 'ERROR') {
+                    if ($request->getReason() === 'ERROR') {
                         trigger_error(
                             'Session ended with error',
                             E_USER_WARNING
@@ -116,38 +117,44 @@ class Controller
     /**
      * Returns a Request object for the given raw request data.
      *
-     * @param string $rawRequest Raw request data.
+     * @param string $rawData Raw request data.
      *
      * @return Request
      */
-    protected function buildRequest($rawRequest)
+    protected function buildRequest($rawData)
     {
-        $request = new Request($rawRequest, $this->configuration->getAppId());
+        $factory = new RequestFactory();
+        $request = $factory->getInstanceForData(
+            $rawData,
+            $this->configuration->getAppId()
+        );
 
-        return $request->fromData();
+        return $request;
     }
 
     /**
      * Returns a Responder instance for the given IntentRequest instance.
      *
-     * @param IntentRequest $request IntentRequest instance.
+     * @param Intent $request IntentRequest instance.
      *
      * @return ResponderInterface
      */
-    protected function buildResponderForIntentRequest(IntentRequest $request)
+    protected function buildResponderForIntentRequest(Intent $request)
     {
-        switch ($request->intentName) {
+        $intentName = $request->getIntentName();
+
+        switch ($intentName) {
             case 'AMAZON.HelpIntent':
                 return new Help();
             case 'AMAZON.CancelIntent':
                 return new Cancel();
             case 'AMAZON.StopIntent':
                 return new Stop();
-            case (strpos($request->intentName, 'Minecraft') === 0):
+            case (strpos($intentName, 'Minecraft') === 0):
                 $mcStatus = new MinecraftStatus('localhost');
                 $mcData = $mcStatus->query(true);
 
-                return $this->buildResponderForMinecraftIntent($request->intentName, $mcData);
+                return $this->buildResponderForMinecraftIntent($intentName, $mcData);
             case 'RandomFactIntent':
                 return new RandomFact();
             case 'SurpriseIntent':
@@ -162,7 +169,7 @@ class Controller
                 trigger_error(
                     sprintf(
                         'Unsupported intent name %s ',
-                        var_export($request->intentName, true)
+                        var_export($intentName, true)
                     ),
                     E_USER_WARNING
                 );

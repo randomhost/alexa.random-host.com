@@ -28,7 +28,8 @@ Planned Features
 Additional Resources
 --------------------
 
-* [Amazon's Alexa Skill Kit][3]
+* [Amazon Alexa PHP Library][3]
+* [Amazon's Alexa Skill Kit][4]
 
 License
 -------
@@ -37,4 +38,5 @@ See LICENSE.txt for full license details.
 
 [1]: https://www.amazon.com/alexa
 [2]: https://www.random-host.com/
-[3]: https://developer.amazon.com/alexa-skills-kit
+[3]: https://github.com/randomhost/alexa
+[4]: https://developer.amazon.com/alexa-skills-kit
