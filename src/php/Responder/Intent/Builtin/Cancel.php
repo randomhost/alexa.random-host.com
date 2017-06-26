@@ -34,7 +34,7 @@ class Cancel extends AbstractResponder implements ResponderInterface
                     $this->randomizeResponseText($responses)
                 )
             )
-            ->endSession(false);
+            ->endSession(true);
 
         return $this;
     }

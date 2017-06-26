@@ -6,7 +6,9 @@
                 "Egal",
                 "Abbruch",
                 "Vergiss es",
-                "Hat sich erledigt"
+                "Schon gut",
+                "Hat sich erledigt",
+                "Doch nicht"
             ]
         },
         {
@@ -14,7 +16,8 @@
             "samples": [
                 "Hilfe",
                 "Welche Befehle gibt es",
-                "Was kannst du"
+                "Was kannst du",
+                "Was kann ich fragen"
             ]
         },
         {
@@ -23,9 +26,10 @@
                 "Danke",
                 "Das wars",
                 "Das wäre dann alles",
-                "Doch nicht",
                 "Wegtreten",
-                "Programm beenden"
+                "Programm beenden",
+                "Hör auf",
+                "Ruhe"
             ]
         },
         {

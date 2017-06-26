@@ -28,12 +28,11 @@ class RandomFact extends AbstractResponder implements ResponderInterface
                 ->respondSSML(
                     $this->withSound(
                         self::SOUND_ERROR,
-                        'Es wurden leider keine Facts configuriert. '.
-                        'Kann ich dir sonst irgendwie helfen?'
+                        'Es wurden leider keine Facts configuriert.'
                     )
 
                 )
-                ->endSession(false);
+                ->endSession(true);
 
             return $this;
         }
