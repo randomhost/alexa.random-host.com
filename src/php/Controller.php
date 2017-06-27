@@ -45,11 +45,13 @@ class Controller
 
     /**
      * Controller constructor.
+     *
+     * @param string $config Optional: Configuration file name without file extension.
      */
-    public function __construct()
+    public function __construct($config = 'config')
     {
         $this->response = new Response();
-        $this->configuration = new Configuration();
+        $this->configuration = new Configuration($config);
     }
 
     /**

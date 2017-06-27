@@ -29,19 +29,14 @@ class Configuration
     private $appId = '';
 
     /**
-     * Random facts.
-     *
-     * @var string[]
-     */
-    private $randomFacts;
-
-    /**
      * Configuration constructor.
+     *
+     * @param string $config Optional: Configuration file name without file extension.
      */
-    public function __construct()
+    public function __construct($config = 'config')
     {
         $this
-            ->loadConfig()
+            ->loadConfig($config)
             ->loadMandatoryParameters();
     }
 
@@ -81,13 +76,21 @@ class Configuration
     /**
      * Loads the JSON config file.
      *
+     * @param string $fileName Configuration file name without file extension.
+     *
      * @return $this
      *
      * @throws RuntimeException Thrown in case the config file could not be loaded.
      */
-    private function loadConfig()
+    private function loadConfig($fileName)
     {
-        $filePath = __DIR__.'/../data/config.json';
+        if (1 !== preg_match('/^[a-zA-Z_0-9\-]+(\.[a-zA-Z_0-9\-]+)?$/', $fileName)) {
+            throw new RuntimeException(
+                "Invalid config file name ${$fileName}"
+            );
+        }
+
+        $filePath = __DIR__.'/../data/'.$fileName.'.json';
 
         $rawJson = file_get_contents($filePath);
         if (false === $rawJson) {
