@@ -4,6 +4,7 @@ namespace randomhost\Alexa\Responder\Intent\System;
 
 use randomhost\Alexa\Responder\AbstractResponder;
 use randomhost\Alexa\Responder\ResponderInterface;
+use RuntimeException;
 
 /**
  * Load Intent.
@@ -16,17 +17,68 @@ use randomhost\Alexa\Responder\ResponderInterface;
 class Load extends AbstractResponder implements ResponderInterface
 {
     /**
+     * Load within the last minute.
+     */
+    const LOAD_LAST_1 = 1;
+
+    /**
+     * Load within the last 5 minutes.
+     */
+    const LOAD_LAST_5 = 5;
+
+    /**
+     * Load within the last 15 minutes.
+     */
+    const LOAD_LAST_15 = 15;
+
+    /**
      * Runs the Responder.
      *
      * @return $this
      */
     public function run()
     {
-        $load = $this->fetchSystemLoad();
+        try {
+            $load = $this->fetchSystemLoad();
 
-        $this->response
-            ->respondSSML($load)
-            ->endSession(false);
+            $this->response
+                ->respondSSML(
+                    $this->withSound(
+                        self::SOUND_CONFIRM,
+                        sprintf(
+                            'Die durchschnittliche Auslastung beträgt: '.
+                            '<say-as interpret-as="spell-out">%s</say-as> in der letzten Minute, '.
+                            '<say-as interpret-as="spell-out">%s</say-as> in den letzten 5 Minuten und '.
+                            '<say-as interpret-as="spell-out">%s</say-as> in den letzten 15 Minuten.',
+                            str_replace('.', ',', $load[self::LOAD_LAST_1]),
+                            str_replace('.', ',', $load[self::LOAD_LAST_5]),
+                            str_replace('.', ',', $load[self::LOAD_LAST_15])
+                        )
+                    )
+                )
+                ->withCard(
+                    'System Auslastung',
+                    sprintf(
+                        "Die durchschnittliche Auslastung beträgt:\r\n".
+                        "%s in der letzten Minute,\r\n".
+                        "%s in den letzten 5 Minuten und\r\n".
+                        "%s in den letzten 15 Minuten.",
+                        str_replace('.', ',', $load[self::LOAD_LAST_1]),
+                        str_replace('.', ',', $load[self::LOAD_LAST_5]),
+                        str_replace('.', ',', $load[self::LOAD_LAST_15])
+                    )
+                )
+                ->endSession(false);
+        } catch (RuntimeException $e) {
+            $this->response
+                ->respondSSML(
+                    $this->withSound(
+                        self::SOUND_ERROR,
+                        'Die Auslastung konnte leider nicht ermittelt werden.'
+                    )
+                )
+                ->endSession(true);
+        }
 
         return $this;
     }
@@ -34,7 +86,7 @@ class Load extends AbstractResponder implements ResponderInterface
     /**
      * Returns the system uptime.
      *
-     * @return float
+     * @return float[]
      */
     private function fetchSystemLoad()
     {
@@ -47,30 +99,15 @@ class Load extends AbstractResponder implements ResponderInterface
         );
 
         if ($load !== 1) {
-            $response = $this->withSound(
-                self::SOUND_ERROR,
-                'Die Auslastung konnte leider nicht ermittelt werden.'
-            );
-        } else {
-            $loadLastMinute = (float)$matches[1];
-            $loadLastFive = (float)$matches[2];
-            $loadLastFifteen = (float)$matches[3];
-
-            $response = $this->withSound(
-                self::SOUND_CONFIRM,
-                sprintf(
-                    'Die durchschnittliche Auslastung beträgt: '.
-                    '<say-as interpret-as="spell-out">%s</say-as> in der letzten Minute, '.
-                    '<say-as interpret-as="spell-out">%s</say-as> in den letzten 5 Minuten und '.
-                    '<say-as interpret-as="spell-out">%s</say-as> in den letzten 15 Minuten.',
-                    str_replace('.', ',', $loadLastMinute),
-                    str_replace('.', ',', $loadLastFive),
-                    str_replace('.', ',', $loadLastFifteen)
-                )
+            throw new RuntimeException(
+                'Could not fetch system load'
             );
         }
 
-
-        return $response;
+        return array(
+            self::LOAD_LAST_1 => (float)$matches[1],
+            self::LOAD_LAST_5 => (float)$matches[2],
+            self::LOAD_LAST_15 => (float)$matches[3],
+        );
     }
 }

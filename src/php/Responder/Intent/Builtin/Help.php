@@ -54,6 +54,19 @@ class Help extends AbstractResponder implements ResponderInterface
                     implode("\r\n", $this->helpOutput)
                 )
             )
+            ->withCard(
+                'Verfügbare Funktionen',
+                "Minecraft:\r\n".
+                "- Wie viele Spieler sind auf dem Minecraft Server?\n".
+                "- Welche Spieler sind auf dem Minecraft Server?\n".
+                "- Wie ist die Version des Minecraft Servers?\r\n".
+                "System:\r\n".
+                "- Wie ist die System Auslastung?\n".
+                "- Gibt es System Updates?\n".
+                "- Wie ist die System Uptime?\r\n".
+                "Sonstiges:\r\n".
+                "- Gib mir einen Random Fact."
+            )
             ->endSession(false);
 
         return $this;

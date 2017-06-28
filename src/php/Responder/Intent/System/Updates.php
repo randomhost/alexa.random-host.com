@@ -4,6 +4,7 @@ namespace randomhost\Alexa\Responder\Intent\System;
 
 use randomhost\Alexa\Responder\AbstractResponder;
 use randomhost\Alexa\Responder\ResponderInterface;
+use RuntimeException;
 
 /**
  * Updates Intent.
@@ -16,17 +17,87 @@ use randomhost\Alexa\Responder\ResponderInterface;
 class Updates extends AbstractResponder implements ResponderInterface
 {
     /**
+     * Pending package upgrades.
+     */
+    const PACKAGE_UPGRADE = 'upgrade';
+
+    /**
+     * Pending new packages.
+     */
+    const PACKAGE_NEW = 'new';
+
+    /**
+     * Pending package removals.
+     */
+    const PACKAGE_REMOVE = 'remove';
+
+    /**
+     * Packages kept at their current version.
+     */
+    const PACKAGE_KEEP = 'keep';
+
+    /**
      * Runs the Responder.
      *
      * @return $this
      */
     public function run()
     {
-        $updates = $this->fetchPackageUpdates();
+        try {
+            $updates = $this->fetchPackageUpdates();
 
-        $this->response
-            ->respondSSML($updates)
-            ->endSession(false);
+            if ($updates[self::PACKAGE_UPGRADE] === 0
+                && $updates[self::PACKAGE_NEW] === 0
+                && $updates[self::PACKAGE_REMOVE] === 0
+                && $updates[self::PACKAGE_KEEP] === 0
+            ) {
+                $noUpdates = 'Es stehen keine Updates zur Verfügung.';
+
+                $this->response
+                    ->respondSSML($this->withSound(self::SOUND_CONFIRM, $noUpdates))
+                    ->withCard('System Updates', $noUpdates)
+                    ->endSession(false);
+
+                return $this;
+            }
+
+            $this->response
+                ->respondSSML(
+                    $this->withSound(
+                        self::SOUND_CONFIRM,
+                        sprintf(
+                            'Es stehen %s, %s und %s aus. %s werden in ihrer derzeitigen Version beibehalten.',
+                            $this->getPhrasePackageUpgrade($updates[self::PACKAGE_UPGRADE]),
+                            $this->getPhrasePackageNew($updates[self::PACKAGE_NEW]),
+                            $this->getPhrasePackageRemove($updates[self::PACKAGE_REMOVE]),
+                            $this->getPhrasePackageKeep($updates[self::PACKAGE_KEEP])
+                        )
+                    )
+                )
+                ->withCard(
+                    'System Updates',
+                    sprintf(
+                        "Aktualisierte Pakete: %u\r\n".
+                        "Neue Pakete: %u\r\n".
+                        "Entfernte Pakete: %u\r\n".
+                        "Beibehaltene Pakete: %u",
+                        $updates[self::PACKAGE_UPGRADE],
+                        $updates[self::PACKAGE_NEW],
+                        $updates[self::PACKAGE_REMOVE],
+                        $updates[self::PACKAGE_KEEP]
+                    )
+                )
+                ->endSession(false);
+        } catch (RuntimeException $e) {
+            $this->response
+                ->respondSSML(
+                    $this->withSound(
+                        self::SOUND_ERROR,
+                        'Die verfügbaren Updates konnten leider nicht ermittelt werden.'
+                    )
+                )
+                ->endSession(true);
+        }
 
         return $this;
     }
@@ -34,7 +105,7 @@ class Updates extends AbstractResponder implements ResponderInterface
     /**
      * Returns available updates.
      *
-     * @return float
+     * @return int[]
      */
     private function fetchPackageUpdates()
     {
@@ -47,39 +118,80 @@ class Updates extends AbstractResponder implements ResponderInterface
         );
 
         if ($updates !== 1) {
-            return $this->withSound(
-                self::SOUND_ERROR,
-                'Die verfügbaren Updates konnten leider nicht ermittelt werden.'
+            throw new RuntimeException(
+                'Could not fetch package updates'
             );
         }
 
-        $pkgUpgraded = (int)$matches[1];
-        $pkgNew = (int)$matches[2];
-        $pkgRemove = (int)$matches[3];
-        $pkgNotUpgraded = (int)$matches[4];
-
-        if ($pkgUpgraded === 0 && $pkgNew === 0 && $pkgRemove === 0 && $pkgNotUpgraded === 0) {
-            return $this->withSound(
-                self::SOUND_CONFIRM,
-                'Es stehen keine Updates zur Verfügung.'
-            );
-        }
-
-        $strUpgraded = ($pkgUpgraded === 1) ? 'ein Update' : "${pkgUpgraded} Updates";
-        $strNew = ($pkgNew === 1) ? 'eine Neuinstallation' : "${pkgNew} Neuinstallationen";
-        $strRemove = ($pkgRemove === 1) ? 'eine Entfernung' : "${pkgRemove} Entfernungen";
-        $strNotUpgraded = ($pkgNotUpgraded === 1) ? 'wird 1 Paket'
-            : "werden ${pkgNotUpgraded} Pakete";
-
-        return $this->withSound(
-            self::SOUND_CONFIRM,
-            sprintf(
-                'Es stehen %s, %s und %s aus. Dabei %s explizit nicht aktualisiert.',
-                $strUpgraded,
-                $strNew,
-                $strRemove,
-                $strNotUpgraded
-            )
+        return array(
+            self::PACKAGE_UPGRADE => (int)$matches[1],
+            self::PACKAGE_NEW => (int)$matches[2],
+            self::PACKAGE_REMOVE => (int)$matches[3],
+            self::PACKAGE_KEEP => (int)$matches[4],
         );
+    }
+
+    /**
+     * Returns the phrase for pending package upgrades.
+     *
+     * @param int $packages Number of packages.
+     *
+     * @return string
+     */
+    private function getPhrasePackageUpgrade($packages)
+    {
+        if ($packages === 1) {
+            return 'ein Update';
+        }
+
+        return "${packages} Updates";
+    }
+
+    /**
+     * Returns the phrase for pending new packages.
+     *
+     * @param int $packages Number of packages.
+     *
+     * @return string
+     */
+    private function getPhrasePackageNew($packages)
+    {
+        if ($packages === 1) {
+            return 'eine Neuinstallation';
+        }
+
+        return "${packages} Neuinstallationen";
+    }
+
+    /**
+     * Returns the phrase for pending package removals.
+     *
+     * @param int $packages Number of packages.
+     *
+     * @return string
+     */
+    private function getPhrasePackageRemove($packages)
+    {
+        if ($packages === 1) {
+            return 'eine Entfernung';
+        }
+
+        return "${packages} Entfernungen";
+    }
+
+    /**
+     * Returns the phrase for package which will be kept at their current version.
+     *
+     * @param int $packages Number of packages.
+     *
+     * @return string
+     */
+    private function getPhrasePackageKeep($packages)
+    {
+        if ($packages === 1) {
+            return 'Ein Paket';
+        }
+
+        return "${packages} Pakete";
     }
 }

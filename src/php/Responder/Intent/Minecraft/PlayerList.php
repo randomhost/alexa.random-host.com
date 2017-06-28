@@ -47,8 +47,20 @@ class PlayerList extends AbstractMinecraft implements ResponderInterface
 
         $players = $this->data['players'];
 
+        $playerCount = count($players);
+
+        $this->response->withCard(
+            'Minecraft Spieler Liste',
+            sprintf(
+                "Es %s sich %u Spieler auf dem Server.\r\n%s",
+                (1 === $playerCount) ? 'befindet' : 'befinden',
+                $playerCount,
+                implode(",\r\n", $players)
+            )
+        );
+
         switch (true) {
-            case (count($players) <= 0):
+            case ($playerCount <= 0):
                 $this->response
                     ->respondSSML(
                         $this->withSound(
@@ -61,7 +73,7 @@ class PlayerList extends AbstractMinecraft implements ResponderInterface
                     ->endSession(false);
 
                 return $this;
-            case (count($players) === 1):
+            case ($playerCount === 1):
                 $this->response
                     ->respondSSML(
                         $this->withSound(

@@ -38,6 +38,13 @@ class Surprise extends AbstractResponder implements ResponderInterface
 
         $surprise = $this->randomizeResponseText($surprises);
 
+        if (!empty($surprise['description'])) {
+            $this->response->withCard(
+                'Überraschung',
+                $surprise['description']
+            );
+        }
+
         $this->response
             ->respondSSML(
                 sprintf(

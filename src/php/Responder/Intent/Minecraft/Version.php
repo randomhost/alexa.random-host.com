@@ -48,6 +48,13 @@ class Version extends AbstractMinecraft implements ResponderInterface
                     sprintf($this->randomizeResponseText($responses), $version)
                 )
             )
+            ->withCard(
+                'Minecraft Server Version',
+                sprintf(
+                    'Es läuft Version %s.',
+                    $version
+                )
+            )
             ->endSession(false);
 
         return $this;

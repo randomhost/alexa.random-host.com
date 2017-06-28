@@ -50,6 +50,15 @@ class PlayerCount extends AbstractMinecraft implements ResponderInterface
 
         $playerCount = intval($this->data['player_count']);
 
+        $this->response->withCard(
+            'Minecraft Spieler',
+            sprintf(
+                'Es %s sich %u Spieler auf dem Server.',
+                (1 === $playerCount) ? 'befindet' : 'befinden',
+                $playerCount
+            )
+        );
+
         switch (true) {
             case ($playerCount <= 0):
                 $this->response

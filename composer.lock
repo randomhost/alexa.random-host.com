@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "randomhost/alexa",
-            "version": "0.3.1",
+            "version": "0.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/randomhost/alexa.git",
-                "reference": "dd13e9e3e1aa47f1814ee0e1134e3040bdda4144"
+                "reference": "89284f718bf7ce8dfd707ea3381e24a19ab3fbe4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/randomhost/alexa/zipball/dd13e9e3e1aa47f1814ee0e1134e3040bdda4144",
-                "reference": "dd13e9e3e1aa47f1814ee0e1134e3040bdda4144",
+                "url": "https://api.github.com/repos/randomhost/alexa/zipball/89284f718bf7ce8dfd707ea3381e24a19ab3fbe4",
+                "reference": "89284f718bf7ce8dfd707ea3381e24a19ab3fbe4",
                 "shasum": ""
             },
             "require": {
@@ -55,9 +55,9 @@
             ],
             "description": "Amazon Alexa interface for PHP",
             "support": {
-                "source": "https://github.com/randomhost/alexa/tree/0.3.1"
+                "source": "https://github.com/randomhost/alexa/tree/0.3.2"
             },
-            "time": "2017-06-25T16:46:46+00:00"
+            "time": "2017-06-28T17:13:41+00:00"
         },
         {
             "name": "randomhost/mcstat",

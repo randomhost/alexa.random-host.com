@@ -37,12 +37,18 @@ class RandomFact extends AbstractResponder implements ResponderInterface
             return $this;
         }
 
+        $randomFact = $this->randomizeResponseText($randomFacts);
+
         $this->response
             ->respondSSML(
                 $this->withSound(
                     self::SOUND_CONFIRM,
-                    $this->randomizeResponseText($randomFacts)
+                    $randomFact
                 )
+            )
+            ->withCard(
+                'Random Fact',
+                $randomFact
             )
             ->endSession(false);
 
