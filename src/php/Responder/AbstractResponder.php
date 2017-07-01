@@ -64,6 +64,20 @@ abstract class AbstractResponder implements ResponderInterface
     protected $response;
 
     /**
+     * Base URL for audio files.
+     *
+     * @var string
+     */
+    protected $audioBaseUrl = '';
+
+    /**
+     * Base URL for image files.
+     *
+     * @var string
+     */
+    protected $imageBaseUrl = '';
+
+    /**
      * Sets the Response instance.
      *
      * @param Response $response Response instance.
@@ -88,6 +102,10 @@ abstract class AbstractResponder implements ResponderInterface
     {
         $this->config = $config;
 
+        $this
+            ->determineAudioBaseUrl()
+            ->determineImageBaseUrl();
+
         return $this;
     }
 
@@ -106,7 +124,7 @@ abstract class AbstractResponder implements ResponderInterface
     /**
      * Prefixes the given response with a pre-defined sound file.
      *
-     * @param string $sound One of the self::SOUND_* constants.
+     * @param string $sound    One of the self::SOUND_* constants.
      * @param string $response Response string.
      *
      * @return string String with SSML markup.
@@ -133,11 +151,58 @@ abstract class AbstractResponder implements ResponderInterface
      */
     protected function buildSoundTag($sound)
     {
+        $tag = sprintf(
+            '<audio src="%1$s%2$s.mp3" />',
+            $this->audioBaseUrl,
+            $sound
+        );
+
+        return $tag;
+    }
+
+    /**
+     * Returns the full URL for the given image file.
+     *
+     * @param string $image Image file name.
+     *
+     * @return string
+     */
+    protected function buildImageUrl($image)
+    {
+        return $this->imageBaseUrl.$image;
+    }
+
+    /**
+     * Determines the base URL for audio files.
+     *
+     * @return $this
+     */
+    private function determineAudioBaseUrl()
+    {
         $baseUrl = $this->config->get('audio', 'baseUrl');
         if (is_null($baseUrl) || empty($baseUrl)) {
             throw new RuntimeException('Could not read audio base URL');
         }
 
-        return sprintf('<audio src="%1$s%2$s.mp3" />', $baseUrl, $sound);
+        $this->audioBaseUrl = $baseUrl;
+
+        return $this;
+    }
+
+    /**
+     * Determines the base URL for image files.
+     *
+     * @return $this
+     */
+    private function determineImageBaseUrl()
+    {
+        $baseUrl = $this->config->get('image', 'baseUrl');
+        if (is_null($baseUrl) || empty($baseUrl)) {
+            throw new RuntimeException('Could not read image base URL');
+        }
+
+        $this->imageBaseUrl = $baseUrl;
+
+        return $this;
     }
 }

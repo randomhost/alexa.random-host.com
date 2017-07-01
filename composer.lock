@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "24e61bbb61e3f16458fd4bc0d5a63afe",
+    "content-hash": "3a285350f55822a19f6848b24dba436d",
     "packages": [
         {
             "name": "randomhost/alexa",
-            "version": "0.3.2",
+            "version": "0.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/randomhost/alexa.git",
-                "reference": "89284f718bf7ce8dfd707ea3381e24a19ab3fbe4"
+                "reference": "f612ec471c9a37609162d7ccfd5fd37ea8d083fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/randomhost/alexa/zipball/89284f718bf7ce8dfd707ea3381e24a19ab3fbe4",
-                "reference": "89284f718bf7ce8dfd707ea3381e24a19ab3fbe4",
+                "url": "https://api.github.com/repos/randomhost/alexa/zipball/f612ec471c9a37609162d7ccfd5fd37ea8d083fd",
+                "reference": "f612ec471c9a37609162d7ccfd5fd37ea8d083fd",
                 "shasum": ""
             },
             "require": {
@@ -55,9 +55,9 @@
             ],
             "description": "Amazon Alexa interface for PHP",
             "support": {
-                "source": "https://github.com/randomhost/alexa/tree/0.3.2"
+                "source": "https://github.com/randomhost/alexa/tree/0.3.3"
             },
-            "time": "2017-06-28T17:13:41+00:00"
+            "time": "2017-07-01T12:08:47+00:00"
         },
         {
             "name": "randomhost/mcstat",

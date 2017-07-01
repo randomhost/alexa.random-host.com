@@ -51,9 +51,10 @@ class Version extends AbstractMinecraft implements ResponderInterface
             ->withCard(
                 'Minecraft Server Version',
                 sprintf(
-                    'Es läuft Version %s.',
+                    "Aktuell läuft Version %s.",
                     $version
-                )
+                ),
+                $this->buildImageUrl('minecraft-large.jpg')
             )
             ->endSession(false);
 

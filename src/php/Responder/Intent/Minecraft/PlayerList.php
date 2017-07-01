@@ -56,7 +56,8 @@ class PlayerList extends AbstractMinecraft implements ResponderInterface
                 (1 === $playerCount) ? 'befindet' : 'befinden',
                 $playerCount,
                 implode(",\r\n", $players)
-            )
+            ),
+            $this->buildImageUrl('minecraft-large.jpg')
         );
 
         switch (true) {

@@ -56,7 +56,8 @@ class PlayerCount extends AbstractMinecraft implements ResponderInterface
                 'Es %s sich %u Spieler auf dem Server.',
                 (1 === $playerCount) ? 'befindet' : 'befinden',
                 $playerCount
-            )
+            ),
+            $this->buildImageUrl('minecraft-large.jpg')
         );
 
         switch (true) {
