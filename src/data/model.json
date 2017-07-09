@@ -71,6 +71,26 @@
             "slots": []
         },
         {
+            "name": "TeamSpeakUserCountIntent",
+            "samples": [
+                "Wie viele Benutzer sind auf dem TeamSpeak Server",
+                "Wie viele User sind auf dem TeamSpeak Server",
+                "Wie viele Leute sind auf dem TeamSpeak Server",
+                "Wie ist die Benutzer Anzahl auf dem TeamSpeak Server",
+                "Wie ist die User Anzahl auf dem TeamSpeak Server"
+            ],
+            "slots": []
+        },
+        {
+            "name": "TeamSpeakUserListIntent",
+            "samples": [
+                "Wer ist auf dem TeamSpeak Server",
+                "Welche Benutzer sind auf dem TeamSpeak Server",
+                "Welche User sind auf dem TeamSpeak Server"
+            ],
+            "slots": []
+        },
+        {
             "name": "RandomFactIntent",
             "samples": [
                 "Gib mir einen Random Fact",

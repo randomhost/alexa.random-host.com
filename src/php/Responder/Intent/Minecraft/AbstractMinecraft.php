@@ -23,7 +23,7 @@ abstract class AbstractMinecraft extends AbstractResponder implements ResponderI
     protected $data;
 
     /**
-     * MinecraftPlayerCount constructor.
+     * AbstractMinecraft constructor.
      *
      * @param array $data Data from the Minecraft server.
      */

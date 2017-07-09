@@ -12,18 +12,15 @@ more than a blueprint, though.
 Features
 --------
 
-* *Alexa, ask random-host **how many players** are on the **minecraft server**?*
-* *Alexa, ask random-host **which players** are on the **minecraft server**?*
-* *Alexa, ask random-host **which version** is the **minecraft server**?*
+* *Alexa, ask random-host **how many players** are on the **Minecraft server**?*
+* *Alexa, ask random-host **which players** are on the **Minecraft server**?*
+* *Alexa, ask random-host **which version** is the **Minecraft server**?*
+* *Alexa, ask random-host **how many users** are on the **TeamSpeak server**?*
+* *Alexa, ask random-host **which users** are on the **TeamSpeak server**?*
 * *Alexa, ask random-host for **a random fact**.*
 * *Alexa, ask random-host for the **system uptime**.*
 * *Alexa, ask random-host for the **system load**.*
 * *Alexa, ask random-host for **available package updates**.*
-
-Planned Features
-----------------
-
-* Retrieving online users from the TeamSpeak 3 server
 
 Additional Resources
 --------------------

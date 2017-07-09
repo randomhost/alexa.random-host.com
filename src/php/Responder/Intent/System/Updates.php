@@ -65,13 +65,7 @@ class Updates extends AbstractResponder implements ResponderInterface
                 ->respondSSML(
                     $this->withSound(
                         self::SOUND_CONFIRM,
-                        sprintf(
-                            'Es stehen %s, %s und %s aus. %s werden in ihrer derzeitigen Version beibehalten.',
-                            $this->getPhrasePackageUpgrade($updates[self::PACKAGE_UPGRADE]),
-                            $this->getPhrasePackageNew($updates[self::PACKAGE_NEW]),
-                            $this->getPhrasePackageRemove($updates[self::PACKAGE_REMOVE]),
-                            $this->getPhrasePackageKeep($updates[self::PACKAGE_KEEP])
-                        )
+                        $this->getPhrasePackages($updates)
                     )
                 )
                 ->withCard(
@@ -132,6 +126,31 @@ class Updates extends AbstractResponder implements ResponderInterface
     }
 
     /**
+     * Returns the phrase for pending package changes.
+     *
+     * @param int[] $updates Number of package updates, ordered by type.
+     *
+     * @return string
+     */
+    private function getPhrasePackages($updates)
+    {
+        $parts = array(
+            $this->getPhrasePackageUpgrade($updates[self::PACKAGE_UPGRADE]),
+            $this->getPhrasePackageNew($updates[self::PACKAGE_NEW]),
+            $this->getPhrasePackageRemove($updates[self::PACKAGE_REMOVE]),
+            $this->getPhrasePackageKeep($updates[self::PACKAGE_KEEP]),
+        );
+
+        $phrase = implode(' ', $parts);
+
+        if (trim($phrase) === '') {
+            return 'Es stehen keine Updates zur Verfügung.';
+        }
+
+        return $phrase;
+    }
+
+    /**
      * Returns the phrase for pending package upgrades.
      *
      * @param int $packages Number of packages.
@@ -140,11 +159,15 @@ class Updates extends AbstractResponder implements ResponderInterface
      */
     private function getPhrasePackageUpgrade($packages)
     {
-        if ($packages === 1) {
-            return 'ein Update';
+        if ($packages === 0) {
+            return '';
         }
 
-        return "${packages} Updates";
+        if ($packages === 1) {
+            return 'Es steht ein Update aus.';
+        }
+
+        return "Es stehen ${packages} Updates aus.";
     }
 
     /**
@@ -156,11 +179,15 @@ class Updates extends AbstractResponder implements ResponderInterface
      */
     private function getPhrasePackageNew($packages)
     {
-        if ($packages === 1) {
-            return 'eine Neuinstallation';
+        if ($packages === 0) {
+            return '';
         }
 
-        return "${packages} Neuinstallationen";
+        if ($packages === 1) {
+            return 'Ein Paket kommt neu hinzu.';
+        }
+
+        return "${packages} Pakete kommen neu hinzu.";
     }
 
     /**
@@ -172,11 +199,15 @@ class Updates extends AbstractResponder implements ResponderInterface
      */
     private function getPhrasePackageRemove($packages)
     {
-        if ($packages === 1) {
-            return 'eine Entfernung';
+        if ($packages === 0) {
+            return '';
         }
 
-        return "${packages} Entfernungen";
+        if ($packages === 1) {
+            return 'Ein Paket wird entfernt.';
+        }
+
+        return "${packages} Pakete werden entfernt.";
     }
 
     /**
@@ -188,10 +219,14 @@ class Updates extends AbstractResponder implements ResponderInterface
      */
     private function getPhrasePackageKeep($packages)
     {
-        if ($packages === 1) {
-            return 'Ein Paket';
+        if ($packages === 0) {
+            return '';
         }
 
-        return "${packages} Pakete";
+        if ($packages === 1) {
+            return 'Ein Paket wird nicht aktualisiert.';
+        }
+
+        return "${packages} Pakete werden nicht aktualisiert.";
     }
 }
