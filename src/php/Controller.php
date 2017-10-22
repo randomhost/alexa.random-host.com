@@ -20,11 +20,15 @@ use randomhost\Alexa\Responder\Intent\Minecraft\Version as MinecraftVersion;
 use randomhost\Alexa\Responder\Intent\System\Load;
 use randomhost\Alexa\Responder\Intent\System\Updates;
 use randomhost\Alexa\Responder\Intent\System\Uptime;
+use randomhost\Alexa\Responder\Intent\TeamSpeak3\UserCount as TeamSpeak3UserCount;
+use randomhost\Alexa\Responder\Intent\TeamSpeak3\UserList as TeamSpeak3UserList;
 use randomhost\Alexa\Responder\Launch\Greeting;
 use randomhost\Alexa\Responder\ResponderInterface;
 use randomhost\Alexa\Responder\Unsupported;
 use randomhost\Alexa\Response\Response as Response;
 use randomhost\Minecraft\Status as MinecraftStatus;
+use TeamSpeak3;
+use TeamSpeak3_Node_Server;
 
 /**
  * Controller for Alexa skills.
@@ -153,10 +157,22 @@ class Controller
             case 'AMAZON.StopIntent':
                 return new Stop();
             case (strpos($intentName, 'Minecraft') === 0):
-                $mcStatus = new MinecraftStatus('localhost');
+                $minecraftHost = $this->configuration->get('minecraft', 'host');
+                if (is_null($minecraftHost)) {
+                    return new Unsupported();
+                }
+                $mcStatus = new MinecraftStatus($minecraftHost);
                 $mcData = $mcStatus->query(true);
 
                 return $this->buildResponderForMinecraftIntent($intentName, $mcData);
+            case (strpos($intentName, 'TeamSpeak') === 0):
+                $ts3Uri = $this->configuration->get('teamspeak', 'uri');
+                if (is_null($ts3Uri)) {
+                    return new Unsupported();
+                }
+                $ts3 = TeamSpeak3::factory($ts3Uri);
+
+                return $this->buildResponderForTeamSpeak3Intent($intentName, $ts3);
             case 'RandomFactIntent':
                 return new RandomFact();
             case 'SurpriseIntent':
@@ -200,6 +216,29 @@ class Controller
             case 'MinecraftVersionIntent':
             default:
                 $responder = new MinecraftVersion($data);
+                break;
+        }
+
+        return $responder;
+    }
+
+    /**
+     * Returns a TeamSpeak 3 Intent.
+     *
+     * @param string                 $intentName Intent name.
+     * @param TeamSpeak3_Node_Server $ts3        TeamSpeak3_Node_Host instance.
+     *
+     * @return TeamSpeak3UserCount
+     */
+    protected function buildResponderForTeamSpeak3Intent($intentName, TeamSpeak3_Node_Server $ts3)
+    {
+        switch ($intentName) {
+            case 'TeamSpeakUserListIntent':
+                $responder = new TeamSpeak3UserList($ts3);
+                break;
+            case 'TeamSpeakUserCountIntent':
+            default:
+                $responder = new TeamSpeak3UserCount($ts3);
                 break;
         }
 
