@@ -65,7 +65,7 @@ class Uptime extends AbstractResponder implements ResponderInterface
             $this->response
                 ->respondSSML($this->withSound(self::SOUND_CONFIRM, sprintf($response, $uptimeStr)))
                 ->withCard('System Uptime', sprintf("Die Uptime beträgt:\r\n%s", $uptimeStr))
-                ->endSession(false);
+                ->endSession(true);
         } catch (RuntimeException $e) {
             $this->response
                 ->respondSSML(

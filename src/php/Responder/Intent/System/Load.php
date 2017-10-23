@@ -68,7 +68,7 @@ class Load extends AbstractResponder implements ResponderInterface
                         str_replace('.', ',', $load[self::LOAD_LAST_15])
                     )
                 )
-                ->endSession(false);
+                ->endSession(true);
         } catch (RuntimeException $e) {
             $this->response
                 ->respondSSML(

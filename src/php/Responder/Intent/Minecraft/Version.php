@@ -56,7 +56,7 @@ class Version extends AbstractMinecraft implements ResponderInterface
                 ),
                 $this->buildImageUrl('minecraft-large.jpg')
             )
-            ->endSession(false);
+            ->endSession(true);
 
         return $this;
     }

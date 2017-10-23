@@ -69,7 +69,7 @@ class UserList extends AbstractTeamSpeak3
                             $this->randomizeResponseText($responses['noUsers'])
                         )
                     )
-                    ->endSession(false);
+                    ->endSession(true);
 
                 return $this;
             case ($clientCount === 1):
@@ -83,7 +83,7 @@ class UserList extends AbstractTeamSpeak3
                             )
                         )
                     )
-                    ->endSession(false);
+                    ->endSession(true);
 
                 return $this;
             default:
@@ -96,7 +96,7 @@ class UserList extends AbstractTeamSpeak3
                             implode(",\r\n", $clientsSsml)
                         )
                     )
-                    ->endSession(false);
+                    ->endSession(true);
 
                 return $this;
         }

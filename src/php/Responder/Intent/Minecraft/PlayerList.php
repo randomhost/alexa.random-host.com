@@ -71,7 +71,7 @@ class PlayerList extends AbstractMinecraft implements ResponderInterface
                             $this->randomizeResponseText($responses['noPlayers2'])
                         )
                     )
-                    ->endSession(false);
+                    ->endSession(true);
 
                 return $this;
             case ($playerCount === 1):
@@ -90,7 +90,7 @@ class PlayerList extends AbstractMinecraft implements ResponderInterface
                             )
                         )
                     )
-                    ->endSession(false);
+                    ->endSession(true);
 
                 return $this;
             default:
@@ -103,7 +103,7 @@ class PlayerList extends AbstractMinecraft implements ResponderInterface
                             implode(",\r\n", $players)
                         )
                     )
-                    ->endSession(false);
+                    ->endSession(true);
 
                 return $this;
         }

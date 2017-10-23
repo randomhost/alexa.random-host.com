@@ -26,6 +26,9 @@ class Help extends AbstractResponder implements ResponderInterface
             "Anzahl der Spieler,",
             "Spieler Liste,",
             "oder Version des Servers.",
+            "In der Rubrik TeamSpeak:",
+            "Anzahl der Benutzer,",
+            "Benutzer Liste,",
             "In der Rubrik System:",
             "System Auslastung,",
             "System Updates,",
@@ -60,6 +63,9 @@ class Help extends AbstractResponder implements ResponderInterface
                 "- Wie viele Spieler sind auf dem Minecraft Server?\n".
                 "- Welche Spieler sind auf dem Minecraft Server?\n".
                 "- Wie ist die Version des Minecraft Servers?\r\n".
+                "TeamSpeak:\r\n".
+                "- Wie viele Benutzer sind auf dem TeamSpeak Server?\n".
+                "- Welche Benutzer sind auf dem TeamSpeak Server?\r\n".
                 "System:\r\n".
                 "- Wie ist die System Auslastung?\n".
                 "- Gibt es System Updates?\n".

@@ -56,7 +56,7 @@ class Updates extends AbstractResponder implements ResponderInterface
                 $this->response
                     ->respondSSML($this->withSound(self::SOUND_CONFIRM, $noUpdates))
                     ->withCard('System Updates', $noUpdates)
-                    ->endSession(false);
+                    ->endSession(true);
 
                 return $this;
             }
@@ -81,7 +81,7 @@ class Updates extends AbstractResponder implements ResponderInterface
                         $updates[self::PACKAGE_KEEP]
                     )
                 )
-                ->endSession(false);
+                ->endSession(true);
         } catch (RuntimeException $e) {
             $this->response
                 ->respondSSML(
