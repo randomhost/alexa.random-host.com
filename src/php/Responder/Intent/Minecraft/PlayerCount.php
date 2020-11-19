@@ -8,9 +8,10 @@ use randomhost\Alexa\Responder\ResponderInterface;
  * Handles the MinecraftPlayerCount intent.
  *
  * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2017 random-host.com
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://composer.random-host.com
+ * @copyright 2020 random-host.tv
+ * @license   https://opensource.org/licenses/BSD-3-Clause  BSD License (3 Clause)
+ *
+ * @see       https://random-host.tv
  */
 class PlayerCount extends AbstractMinecraft implements ResponderInterface
 {
@@ -19,7 +20,7 @@ class PlayerCount extends AbstractMinecraft implements ResponderInterface
      *
      * @return $this
      */
-    public function run()
+    public function run(): ResponderInterface
     {
         if (!is_array($this->data) || !array_key_exists('player_count', $this->data)) {
             $this->response
@@ -29,23 +30,24 @@ class PlayerCount extends AbstractMinecraft implements ResponderInterface
                         'Tut mir leid. Der Minecraft Server hat leider nicht geantwortet.'
                     )
                 )
-                ->endSession(true);
+                ->endSession(true)
+            ;
 
             return $this;
         }
 
         $responses = $this->config->get('response', 'minecraftPlayerCount');
         if (is_null($responses) || empty($responses)) {
-            $responses = array(
-                "noPlayers1" => array("Es sind keine Spieler auf dem Server."),
-                "noPlayers2" => array(""),
-                "onePlayer1" => array("Es ist genau ein Spieler dort."),
-                "onePlayer2" => array(""),
-                "twoPlayers1" => array("Es sind genau zwei Spieler dort."),
-                "twoPlayers2" => array(""),
-                "nPlayers1" => array("Es sind %u Spieler auf dem Server."),
-                "nPlayers2" => array(""),
-            );
+            $responses = [
+                'noPlayers1' => ['Es sind keine Spieler auf dem Server.'],
+                'noPlayers2' => [''],
+                'onePlayer1' => ['Es ist genau ein Spieler dort.'],
+                'onePlayer2' => [''],
+                'twoPlayers1' => ['Es sind genau zwei Spieler dort.'],
+                'twoPlayers2' => [''],
+                'nPlayers1' => ['Es sind %u Spieler auf dem Server.'],
+                'nPlayers2' => [''],
+            ];
         }
 
         $playerCount = intval($this->data['player_count']);
@@ -61,7 +63,7 @@ class PlayerCount extends AbstractMinecraft implements ResponderInterface
         );
 
         switch (true) {
-            case ($playerCount <= 0):
+            case $playerCount <= 0:
                 $this->response
                     ->respondSSML(
                         $this->withSound(
@@ -71,10 +73,11 @@ class PlayerCount extends AbstractMinecraft implements ResponderInterface
                             $this->randomizeResponseText($responses['noPlayers2'])
                         )
                     )
-                    ->endSession(true);
+                    ->endSession(true)
+                ;
 
                 return $this;
-            case ($playerCount === 1):
+            case 1 === $playerCount:
                 $this->response
                     ->respondSSML(
                         $this->withSound(
@@ -84,10 +87,11 @@ class PlayerCount extends AbstractMinecraft implements ResponderInterface
                             $this->randomizeResponseText($responses['onePlayer2'])
                         )
                     )
-                    ->endSession(true);
+                    ->endSession(true)
+                ;
 
                 return $this;
-            case ($playerCount === 2):
+            case 2 === $playerCount:
                 $this->response
                     ->respondSSML(
                         $this->withSound(
@@ -97,7 +101,8 @@ class PlayerCount extends AbstractMinecraft implements ResponderInterface
                             $this->randomizeResponseText($responses['twoPlayers2'])
                         )
                     )
-                    ->endSession(true);
+                    ->endSession(true)
+                ;
 
                 return $this;
             default:
@@ -113,7 +118,8 @@ class PlayerCount extends AbstractMinecraft implements ResponderInterface
                             $this->randomizeResponseText($responses['nPlayers2'])
                         )
                     )
-                    ->endSession(true);
+                    ->endSession(true)
+                ;
 
                 return $this;
         }

@@ -8,9 +8,10 @@ use randomhost\Alexa\Responder\ResponderInterface;
  * Handles the MinecraftVersion intent.
  *
  * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2017 random-host.com
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://composer.random-host.com
+ * @copyright 2020 random-host.tv
+ * @license   https://opensource.org/licenses/BSD-3-Clause  BSD License (3 Clause)
+ *
+ * @see       https://random-host.tv
  */
 class Version extends AbstractMinecraft implements ResponderInterface
 {
@@ -19,7 +20,7 @@ class Version extends AbstractMinecraft implements ResponderInterface
      *
      * @return $this
      */
-    public function run()
+    public function run(): ResponderInterface
     {
         if (!is_array($this->data) || !array_key_exists('version', $this->data)) {
             $this->response
@@ -29,7 +30,8 @@ class Version extends AbstractMinecraft implements ResponderInterface
                         'Tut mir leid. Der Minecraft Server hat leider nicht geantwortet.'
                     )
                 )
-                ->endSession(true);
+                ->endSession(true)
+            ;
 
             return $this;
         }
@@ -38,7 +40,7 @@ class Version extends AbstractMinecraft implements ResponderInterface
 
         $responses = $this->config->get('response', 'minecraftVersion');
         if (is_null($responses) || empty($responses)) {
-            $responses = array('Es läuft Version %s.');
+            $responses = ['Es läuft Version %s.'];
         }
 
         $this->response
@@ -51,12 +53,13 @@ class Version extends AbstractMinecraft implements ResponderInterface
             ->withCard(
                 'Minecraft Server Version',
                 sprintf(
-                    "Aktuell läuft Version %s.",
+                    'Aktuell läuft Version %s.',
                     $version
                 ),
                 $this->buildImageUrl('minecraft-large.jpg')
             )
-            ->endSession(true);
+            ->endSession(true)
+        ;
 
         return $this;
     }

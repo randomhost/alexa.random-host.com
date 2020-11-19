@@ -2,24 +2,26 @@
 
 namespace randomhost\Alexa\Responder\Intent\TeamSpeak3;
 
+use randomhost\Alexa\Responder\ResponderInterface;
 use TeamSpeak3_Node_Client;
 
 /**
  * Handles the TeamSpeakUserList intent.
  *
  * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2017 random-host.com
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://composer.random-host.com
+ * @copyright 2020 random-host.tv
+ * @license   https://opensource.org/licenses/BSD-3-Clause  BSD License (3 Clause)
+ *
+ * @see       https://random-host.tv
  */
-class UserList extends AbstractTeamSpeak3
+class UserList extends AbstractTeamSpeak3 implements ResponderInterface
 {
     /**
      * Runs the Responder.
      *
      * @return $this
      */
-    public function run()
+    public function run(): ResponderInterface
     {
         $clientsRaw = $this->ts3->clientList();
         if (!is_array($clientsRaw)) {
@@ -30,18 +32,19 @@ class UserList extends AbstractTeamSpeak3
                         'Tut mir leid. Der TeamSpeak Server hat leider nicht geantwortet.'
                     )
                 )
-                ->endSession(true);
+                ->endSession(true)
+            ;
 
             return $this;
         }
 
         $responses = $this->config->get('response', 'teamspeakUserList');
         if (is_null($responses) || empty($responses)) {
-            $responses = array(
-                "noUsers" => array("Es sind keine Benutzer auf dem Server."),
-                "oneUser" => array("%s ist der einzige Benutzer auf dem Server."),
-                "nUsers" => array("Die folgenden Benutzer sind auf dem Server:"),
-            );
+            $responses = [
+                'noUsers' => ['Es sind keine Benutzer auf dem Server.'],
+                'oneUser' => ['%s ist der einzige Benutzer auf dem Server.'],
+                'nUsers' => ['Die folgenden Benutzer sind auf dem Server:'],
+            ];
         }
 
         $clients = $this->filterClientList($clientsRaw);
@@ -61,7 +64,7 @@ class UserList extends AbstractTeamSpeak3
         );
 
         switch (true) {
-            case ($clientCount <= 0):
+            case $clientCount <= 0:
                 $this->response
                     ->respondSSML(
                         $this->withSound(
@@ -69,10 +72,11 @@ class UserList extends AbstractTeamSpeak3
                             $this->randomizeResponseText($responses['noUsers'])
                         )
                     )
-                    ->endSession(true);
+                    ->endSession(true)
+                ;
 
                 return $this;
-            case ($clientCount === 1):
+            case 1 === $clientCount:
                 $this->response
                     ->respondSSML(
                         $this->withSound(
@@ -83,7 +87,8 @@ class UserList extends AbstractTeamSpeak3
                             )
                         )
                     )
-                    ->endSession(true);
+                    ->endSession(true)
+                ;
 
                 return $this;
             default:
@@ -96,7 +101,8 @@ class UserList extends AbstractTeamSpeak3
                             implode(",\r\n", $clientsSsml)
                         )
                     )
-                    ->endSession(true);
+                    ->endSession(true)
+                ;
 
                 return $this;
         }
@@ -109,11 +115,11 @@ class UserList extends AbstractTeamSpeak3
      *
      * @return TeamSpeak3_Node_Client[]
      */
-    private function filterClientList(array $clientsRaw)
+    private function filterClientList(array $clientsRaw): array
     {
-        $clients = array();
+        $clients = [];
         foreach ($clientsRaw as $client) {
-            if ($client["client_type"]) {
+            if ($client['client_type']) {
                 continue;
             }
             $clients[] = $client;
@@ -129,9 +135,9 @@ class UserList extends AbstractTeamSpeak3
      *
      * @return TeamSpeak3_Node_Client[]
      */
-    private function filterClientListForSsml(array $clientsRaw)
+    private function filterClientListForSsml(array $clientsRaw): array
     {
-        $clients = array();
+        $clients = [];
         foreach ($clientsRaw as $client) {
             $clients[] = htmlspecialchars($client, ENT_XML1);
         }

@@ -11,49 +11,49 @@ use RuntimeException;
  * Uptime Intent.
  *
  * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2017 random-host.com
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://composer.random-host.com
+ * @copyright 2020 random-host.tv
+ * @license   https://opensource.org/licenses/BSD-3-Clause  BSD License (3 Clause)
+ *
+ * @see       https://random-host.tv
  */
 class Uptime extends AbstractResponder implements ResponderInterface
 {
     /**
      * System uptime days.
      */
-    const UPTIME_DAY = 'day';
+    private const UPTIME_DAY = 'day';
 
     /**
      * System uptime hours.
      */
-    const UPTIME_HOUR = 'hour';
+    private const UPTIME_HOUR = 'hour';
 
     /**
      * System uptime minutes.
      */
-    const UPTIME_MINUTE = 'minute';
+    private const UPTIME_MINUTE = 'minute';
 
     /**
      * System uptime seconds.
      */
-    const UPTIME_SECOND = 'second';
-
+    private const UPTIME_SECOND = 'second';
 
     /**
      * Runs the Responder.
      *
      * @return $this
      */
-    public function run()
+    public function run(): ResponderInterface
     {
         try {
             $responses = $this->config->get('response', 'uptime');
             if (is_null($responses) || empty($responses)) {
-                $responses = array('Die Uptime beträgt %s.');
+                $responses = ['Die Uptime beträgt %s.'];
             }
 
             $uptime = $this->fetchSystemUptime();
             $uptimeStr = sprintf(
-                "%s, %s, %s und %s",
+                '%s, %s, %s und %s',
                 $this->getPhraseUptimeDay($uptime[self::UPTIME_DAY]),
                 $this->getPhraseUptimeHour($uptime[self::UPTIME_HOUR]),
                 $this->getPhraseUptimeMinute($uptime[self::UPTIME_MINUTE]),
@@ -65,7 +65,8 @@ class Uptime extends AbstractResponder implements ResponderInterface
             $this->response
                 ->respondSSML($this->withSound(self::SOUND_CONFIRM, sprintf($response, $uptimeStr)))
                 ->withCard('System Uptime', sprintf("Die Uptime beträgt:\r\n%s", $uptimeStr))
-                ->endSession(true);
+                ->endSession(true)
+            ;
         } catch (RuntimeException $e) {
             $this->response
                 ->respondSSML(
@@ -74,7 +75,8 @@ class Uptime extends AbstractResponder implements ResponderInterface
                         'Die Uptime konnte leider nicht ermittelt werden.'
                     )
                 )
-                ->endSession(true);
+                ->endSession(true)
+            ;
         }
 
         return $this;
@@ -85,14 +87,15 @@ class Uptime extends AbstractResponder implements ResponderInterface
      *
      * @return int[]
      */
-    private function fetchSystemUptime()
+    private function fetchSystemUptime(): array
     {
         $uptime = shell_exec('cat /proc/uptime');
         if (false === $uptime) {
             throw new RuntimeException('Failed to fetch system uptime.');
         }
 
-        $seconds = reset(explode(' ', $uptime));
+        $uptimeParts = explode(' ', $uptime);
+        $seconds = reset($uptimeParts);
         $seconds = floatval($seconds);
         $seconds = floor($seconds);
 
@@ -101,16 +104,16 @@ class Uptime extends AbstractResponder implements ResponderInterface
         }
 
         $dateFrom = new DateTime('@0');
-        $dateTo = new DateTime("@$seconds");
+        $dateTo = new DateTime("@{$seconds}");
 
         $dateDiff = $dateFrom->diff($dateTo);
 
-        return array(
-            self::UPTIME_DAY => (int)$dateDiff->format('%a'),
-            self::UPTIME_HOUR => (int)$dateDiff->format('%h'),
-            self::UPTIME_MINUTE => (int)$dateDiff->format('%i'),
-            self::UPTIME_SECOND => (int)$dateDiff->format('%s'),
-        );
+        return [
+            self::UPTIME_DAY => (int) $dateDiff->format('%a'),
+            self::UPTIME_HOUR => (int) $dateDiff->format('%h'),
+            self::UPTIME_MINUTE => (int) $dateDiff->format('%i'),
+            self::UPTIME_SECOND => (int) $dateDiff->format('%s'),
+        ];
     }
 
     /**
@@ -120,9 +123,9 @@ class Uptime extends AbstractResponder implements ResponderInterface
      *
      * @return string
      */
-    private function getPhraseUptimeDay($day)
+    private function getPhraseUptimeDay(int $day): string
     {
-        return $day.(($day === 1) ? ' Tag' : ' Tage');
+        return $day.((1 === $day) ? ' Tag' : ' Tage');
     }
 
     /**
@@ -132,9 +135,9 @@ class Uptime extends AbstractResponder implements ResponderInterface
      *
      * @return string
      */
-    private function getPhraseUptimeHour($hour)
+    private function getPhraseUptimeHour(int $hour): string
     {
-        return $hour.(($hour === 1) ? ' Stunde' : ' Stunden');
+        return $hour.((1 === $hour) ? ' Stunde' : ' Stunden');
     }
 
     /**
@@ -144,9 +147,9 @@ class Uptime extends AbstractResponder implements ResponderInterface
      *
      * @return string
      */
-    private function getPhraseUptimeMinute($minute)
+    private function getPhraseUptimeMinute(int $minute): string
     {
-        return $minute.(($minute === 1) ? ' Minute' : ' Minuten');
+        return $minute.((1 === $minute) ? ' Minute' : ' Minuten');
     }
 
     /**
@@ -156,8 +159,8 @@ class Uptime extends AbstractResponder implements ResponderInterface
      *
      * @return string
      */
-    private function getPhraseUptimeSecond($seconds)
+    private function getPhraseUptimeSecond(int $seconds): string
     {
-        return $seconds.(($seconds === 1) ? ' Sekunde' : ' Sekunden');
+        return $seconds.((1 === $seconds) ? ' Sekunde' : ' Sekunden');
     }
 }

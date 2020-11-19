@@ -10,33 +10,34 @@ use RuntimeException;
  * Load Intent.
  *
  * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2017 random-host.com
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://composer.random-host.com
+ * @copyright 2020 random-host.tv
+ * @license   https://opensource.org/licenses/BSD-3-Clause  BSD License (3 Clause)
+ *
+ * @see       https://random-host.tv
  */
 class Load extends AbstractResponder implements ResponderInterface
 {
     /**
      * Load within the last minute.
      */
-    const LOAD_LAST_1 = 1;
+    private const LOAD_LAST_1 = 1;
 
     /**
      * Load within the last 5 minutes.
      */
-    const LOAD_LAST_5 = 5;
+    private const LOAD_LAST_5 = 5;
 
     /**
      * Load within the last 15 minutes.
      */
-    const LOAD_LAST_15 = 15;
+    private const LOAD_LAST_15 = 15;
 
     /**
      * Runs the Responder.
      *
      * @return $this
      */
-    public function run()
+    public function run(): ResponderInterface
     {
         try {
             $load = $this->fetchSystemLoad();
@@ -62,13 +63,14 @@ class Load extends AbstractResponder implements ResponderInterface
                         "Die durchschnittliche Auslastung beträgt:\r\n".
                         "%s in der letzten Minute,\r\n".
                         "%s in den letzten 5 Minuten und\r\n".
-                        "%s in den letzten 15 Minuten.",
+                        '%s in den letzten 15 Minuten.',
                         str_replace('.', ',', $load[self::LOAD_LAST_1]),
                         str_replace('.', ',', $load[self::LOAD_LAST_5]),
                         str_replace('.', ',', $load[self::LOAD_LAST_15])
                     )
                 )
-                ->endSession(true);
+                ->endSession(true)
+            ;
         } catch (RuntimeException $e) {
             $this->response
                 ->respondSSML(
@@ -77,7 +79,8 @@ class Load extends AbstractResponder implements ResponderInterface
                         'Die Auslastung konnte leider nicht ermittelt werden.'
                     )
                 )
-                ->endSession(true);
+                ->endSession(true)
+            ;
         }
 
         return $this;
@@ -88,7 +91,7 @@ class Load extends AbstractResponder implements ResponderInterface
      *
      * @return float[]
      */
-    private function fetchSystemLoad()
+    private function fetchSystemLoad(): array
     {
         $rawResult = shell_exec('uptime');
 
@@ -98,16 +101,16 @@ class Load extends AbstractResponder implements ResponderInterface
             $matches
         );
 
-        if ($load !== 1) {
+        if (1 !== $load) {
             throw new RuntimeException(
                 'Could not fetch system load'
             );
         }
 
-        return array(
-            self::LOAD_LAST_1 => (float)$matches[1],
-            self::LOAD_LAST_5 => (float)$matches[2],
-            self::LOAD_LAST_15 => (float)$matches[3],
-        );
+        return [
+            self::LOAD_LAST_1 => (float) $matches[1],
+            self::LOAD_LAST_5 => (float) $matches[2],
+            self::LOAD_LAST_15 => (float) $matches[3],
+        ];
     }
 }

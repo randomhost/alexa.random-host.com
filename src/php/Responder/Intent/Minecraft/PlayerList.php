@@ -8,9 +8,10 @@ use randomhost\Alexa\Responder\ResponderInterface;
  * Handles the MinecraftPlayerList intent.
  *
  * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2017 random-host.com
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://composer.random-host.com
+ * @copyright 2020 random-host.tv
+ * @license   https://opensource.org/licenses/BSD-3-Clause  BSD License (3 Clause)
+ *
+ * @see       https://random-host.tv
  */
 class PlayerList extends AbstractMinecraft implements ResponderInterface
 {
@@ -19,7 +20,7 @@ class PlayerList extends AbstractMinecraft implements ResponderInterface
      *
      * @return $this
      */
-    public function run()
+    public function run(): ResponderInterface
     {
         if (!is_array($this->data) || !array_key_exists('players', $this->data)) {
             $this->response
@@ -29,20 +30,21 @@ class PlayerList extends AbstractMinecraft implements ResponderInterface
                         'Tut mir leid. Der Minecraft Server hat leider nicht geantwortet.'
                     )
                 )
-                ->endSession(true);
+                ->endSession(true)
+            ;
 
             return $this;
         }
 
         $responses = $this->config->get('response', 'minecraftPlayerList');
         if (is_null($responses) || empty($responses)) {
-            $responses = array(
-                "noPlayers1" => array("Es sind keine Spieler auf dem Server."),
-                "noPlayers2" => array(""),
-                "onePlayer1" => array("%s ist der einzige Spieler dort."),
-                "onePlayer2" => array(""),
-                "nPlayers" => array("Die folgenden Spieler sind online:"),
-            );
+            $responses = [
+                'noPlayers1' => ['Es sind keine Spieler auf dem Server.'],
+                'noPlayers2' => [''],
+                'onePlayer1' => ['%s ist der einzige Spieler dort.'],
+                'onePlayer2' => [''],
+                'nPlayers' => ['Die folgenden Spieler sind online:'],
+            ];
         }
 
         $players = $this->data['players'];
@@ -61,7 +63,7 @@ class PlayerList extends AbstractMinecraft implements ResponderInterface
         );
 
         switch (true) {
-            case ($playerCount <= 0):
+            case $playerCount <= 0:
                 $this->response
                     ->respondSSML(
                         $this->withSound(
@@ -71,10 +73,11 @@ class PlayerList extends AbstractMinecraft implements ResponderInterface
                             $this->randomizeResponseText($responses['noPlayers2'])
                         )
                     )
-                    ->endSession(true);
+                    ->endSession(true)
+                ;
 
                 return $this;
-            case ($playerCount === 1):
+            case 1 === $playerCount:
                 $this->response
                     ->respondSSML(
                         $this->withSound(
@@ -90,7 +93,8 @@ class PlayerList extends AbstractMinecraft implements ResponderInterface
                             )
                         )
                     )
-                    ->endSession(true);
+                    ->endSession(true)
+                ;
 
                 return $this;
             default:
@@ -103,7 +107,8 @@ class PlayerList extends AbstractMinecraft implements ResponderInterface
                             implode(",\r\n", $players)
                         )
                     )
-                    ->endSession(true);
+                    ->endSession(true)
+                ;
 
                 return $this;
         }

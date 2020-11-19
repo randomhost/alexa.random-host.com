@@ -9,9 +9,10 @@ use randomhost\Alexa\Responder\ResponderInterface;
  * Surprise Intent.
  *
  * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2017 random-host.com
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://composer.random-host.com
+ * @copyright 2020 random-host.tv
+ * @license   https://opensource.org/licenses/BSD-3-Clause  BSD License (3 Clause)
+ *
+ * @see       https://random-host.tv
  */
 class Surprise extends AbstractResponder implements ResponderInterface
 {
@@ -20,7 +21,7 @@ class Surprise extends AbstractResponder implements ResponderInterface
      *
      * @return $this
      */
-    public function run()
+    public function run(): ResponderInterface
     {
         $surprises = $this->config->get('response', 'surprise');
         if (is_null($surprises) || empty($surprises)) {
@@ -31,7 +32,8 @@ class Surprise extends AbstractResponder implements ResponderInterface
                         'Dieser Skill beinhaltet keine Easter Eggs.'
                     )
                 )
-                ->endSession(true);
+                ->endSession(true)
+            ;
 
             return $this;
         }
@@ -53,7 +55,8 @@ class Surprise extends AbstractResponder implements ResponderInterface
                     empty($surprise['text']) ? '' : $surprise['text']
                 )
             )
-            ->endSession(true);
+            ->endSession(true)
+        ;
 
         return $this;
     }

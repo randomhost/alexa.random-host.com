@@ -7,145 +7,192 @@
     <meta name="robots" content="index, follow">
     <meta name="googlebot" content="index, follow">
     <meta name="rating" content="general">
-    <link rel="author" href="https://plus.google.com/101724370596806928220"/>
     <link rel="shortcut icon" type="image/ico" href="favicon.ico">
-    <title>Alexa | random-host.com</title>
+    <title>Alexa - Random-Host.tv</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
 </head>
 
 <body>
 
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed"
-                    data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="./">
-                <img alt="" src="https://avatars2.githubusercontent.com/u/6838037?v=3&amp;s=40">
-                <span class="hidden-xs">random-host.com - </span>Alexa
-            </a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li class="active">
-                    <a href="./">
-                        <i class="fa fa-amazon" aria-hidden="true"></i>
-                        Alexa
-                    </a>
-                </li>
-                <li>
-                    <a href="https://composer.random-host.com/">
-                        <i class="fa fa-archive" aria-hidden="true"></i>
-                        Packages
-                    </a>
-                </li>
-                <li>
-                    <a href="https://github.com/randomhost">
-                        <i class="fa fa-github" aria-hidden="true"></i>
-                        GitHub
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.random-host.com/">
-                        <i class="fa fa-rss" aria-hidden="true"></i>
-                        Blog
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
 <div class="container">
-    <div class="page-header">
-        <h2>Alexa Service Endpoint</h2>
-    </div>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark rounded-bottom mb-3" role="navigation">
+            <a class="navbar-brand" href="./">
+                <img alt="" src="https://avatars2.githubusercontent.com/u/6838037?v=3&amp;s=32" class="d-inline-block align-top" width="32" height="32">
+                Random-Host.tv
+                <span class="small">Alexa Skill</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://random-host.tv/" target="_blank">
+                            <i class="fa fa-tv" aria-hidden="true"></i>
+                            Random-Host.tv
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
-    <div class="row">
-        <div class="col-md-10">
-            <p>
-                This sub-domain hosts the service endpoint for the custom Alexa skill centered
-                around <a href="https://www.random-host.com/">random-host.com</a> and the services
-                hosted on this server such as game servers.
-            </p>
+    <main role="main">
+        <div class="card main">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="page-header">
+                            <h2>Alexa Service Endpunkt</h2>
+                        </div>
 
-            <h3>Features</h3>
+                        <p>
+                            Kennst du schon den Alexa Skill von <a href="https://random-host.tv/">Random-Host.tv</a>?<br>
+                            Frage Alexa wer gerade auf dem TeamSpeak oder Minecraft Server unterwegs ist.
+                        </p>
 
-            <ul>
-                <li><em>Alexa, ask random-host <strong>how many players</strong> are on the <strong>minecraft server</strong>?</em></li>
-                <li><em>Alexa, ask random-host <strong>which players</strong> are on the <strong>minecraft server</strong>?</em></li>
-                <li><em>Alexa, ask random-host <strong>which version</strong> is the <strong>minecraft server</strong>?</em></li>
-                <li><em>Alexa, ask random-host for <strong>a random fact</strong>.</em></li>
-                <li><em>Alexa, ask random-host for the <strong>system uptime</strong>.</em></li>
-                <li><em>Alexa, ask random-host for the <strong>system load</strong>.</em></li>
-                <li><em>Alexa, ask random-host for <strong>available package updates</strong>.</em></li>
-            </ul>
+                        <h3>Verfügbare Befehle</h3>
 
-            <h3>Planned Features</h3>
+                        <p>Probiere doch einmal einen der folgenden Befehle aus:</p>
 
-            <ul>
-                <li>Retrieving online users from the TeamSpeak 3 server</li>
-            </ul>
+                        <h4>Minecraft</h4>
 
+                        <ul>
+                            <li><em>Alexa, frag Random-Host <strong>wie viele Spieler</strong> sind auf dem <strong>Minecraft Server</strong>?</em></li>
+                            <li><em>Alexa, frag Random-Host <strong>welche Spieler</strong> sind auf dem <strong>Minecraft Server</strong>?</em></li>
+                            <li><em>Alexa, frag Random-Host <strong>welche Version</strong> hat der <strong>Minecraft Server</strong>?</em></li>
+                        </ul>
 
-            <h3>Additional Resources</h3>
+                        <h4>TeamSpeak</h4>
 
-            <ul>
-                <li>
-                    <a href="https://github.com/randomhost/alexa.random-host.com">
-                        PHP Endpoint Project Page
-                    </a>
-                </li>
-                <li>
-                    <a href="https://github.com/randomhost/alexa">
-                        PHP Library Project Page
-                    </a>
-                </li>
-            </ul>
+                        <ul>
+                            <li><em>Alexa, frag Random-Host <strong>wie viele Benutzer</strong> sind auf dem <strong>TeamSpeak Server</strong>?</em></li>
+                            <li><em>Alexa, frag Random-Host <strong>welche Benutzer</strong> sind auf dem <strong>TeamSpeak Server</strong>?</em></li>
+                        </ul>
 
-            <ul>
-                <li>
-                    <a href="https://developer.amazon.com">
-                        Amazon Developer Services
-                    </a>
-                </li>
-                <li>
-                    <a href="https://developer.amazon.com/alexa-skills-kit">
-                        Amazon Alexa Skill Kit
-                    </a>
-                </li>
-            </ul>
+                        <h4>System</h4>
 
-            <h3>License</h3>
+                        <ul>
+                            <li><em>Alexa, frag Random-Host nach der <strong>System Uptime</strong>.</em></li>
+                            <li><em>Alexa, frag Random-Host nach der <strong>System Auslastung</strong>.</em></li>
+                            <li><em>Alexa, frag Random-Host nach <strong>verfügbaren Paket Updates</strong>.</em></li>
+                        </ul>
 
-            <p>
-                The source code is released under the
-                <a href="https://opensource.org/licenses/BSD-3-Clause">New BSD License</a> license.
-            </p>
+                        <h4>Verschiedenes</h4>
+
+                        <ul>
+                            <li><em>Alexa, frag Random-Host nach <strong>Random Fact</strong>.</em></li>
+                        </ul>
+
+                        <h3>Weitere Ressourcen</h3>
+
+                        <ul>
+                            <li>
+                                <a href="https://github.com/randomhost/alexa.random-host.com">
+                                    PHP Endpoint Project Page
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/randomhost/alexa">
+                                    PHP Library Project Page
+                                </a>
+                            </li>
+                        </ul>
+
+                        <ul>
+                            <li>
+                                <a href="https://developer.amazon.com">
+                                    Amazon Developer Services
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://developer.amazon.com/alexa-skills-kit">
+                                    Amazon Alexa Skill Kit
+                                </a>
+                            </li>
+                        </ul>
+
+                        <h3>Lizenz</h3>
+
+                        <p>
+                            Der Source Code wurde unter der
+                            <a href="https://opensource.org/licenses/BSD-3-Clause">New BSD License</a> veröffentlicht.
+                        </p>
+                    </div>
+                    <div class="col-md-2">
+                        <img src="https://avatars2.githubusercontent.com/u/6838037?v=3&amp;s=512" class="img-fluid mx-auto" alt="Ch'Ih-Yu">
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <div class="col-md-2">
-            <img
-                src="https://avatars2.githubusercontent.com/u/6838037?v=3&amp;s=512"
-                class="img-responsive img-rounded" alt="Ch'Ih-Yu">
-        </div>
-    </div>
-
-    <hr>
+    </main>
 
     <footer>
-        <ul class="list-inline small">
-            <li class="text-muted">
-                &copy; 2017 random-host.com
-            </li>
-        </ul>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark rounded-top mt-3">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://random-host.tv/impressum" target="_blank">
+                        Impressum
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://random-host.tv/haftung" target="_blank">
+                        Haftung
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://random-host.tv/datenschutz" target="_blank">
+                        Datenschutz
+                    </a>
+                </li>
+            </ul>
+            <div>
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link text-nowrap" href="https://twitch.tv/randomhost"
+                           target="_blank" data-toggle="tooltip" data-placement="top"
+                           title="Twitch Profil">
+                            <i class="fa fa-twitch" aria-hidden="true"></i>
+                            <span class="d-none d-lg-inline">Twitch</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-nowrap" href="https://www.youtube.com/c/random-host"
+                           target="_blank" data-toggle="tooltip" data-placement="top"
+                           title="YouTube Profil">
+                            <i class="fa fa-youtube-play" aria-hidden="true"></i>
+                            <span class="d-none d-lg-inline">YouTube</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-nowrap" href="https://steamcommunity.com/id/random-host"
+                           target="_blank" data-toggle="tooltip" data-placement="top"
+                           title="Steam Profil">
+                            <i class="fa fa-steam" aria-hidden="true"></i>
+                            <span class="d-none d-lg-inline">Steam</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-nowrap" href="https://twitter.com/random_host"
+                           target="_blank" data-toggle="tooltip" data-placement="top"
+                           title="Twitter Profil">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                            <span class="d-none d-lg-inline">Twitter</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+            <span class="navbar-text small">&copy; 2020 Random-Host.tv</span>
+        </nav>
     </footer>
 </div>
 

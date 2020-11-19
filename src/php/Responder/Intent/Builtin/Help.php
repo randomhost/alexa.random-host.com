@@ -9,9 +9,10 @@ use randomhost\Alexa\Responder\ResponderInterface;
  * Help Intent.
  *
  * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2017 random-host.com
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://composer.random-host.com
+ * @copyright 2020 random-host.tv
+ * @license   https://opensource.org/licenses/BSD-3-Clause  BSD License (3 Clause)
+ *
+ * @see       https://random-host.tv
  */
 class Help extends AbstractResponder implements ResponderInterface
 {
@@ -21,32 +22,32 @@ class Help extends AbstractResponder implements ResponderInterface
      * @var array
      */
     protected $helpOutput
-        = array(
-            "In der Rubrik Minecraft:",
-            "Anzahl der Spieler,",
-            "Spieler Liste,",
-            "oder Version des Servers.",
-            "In der Rubrik TeamSpeak:",
-            "Anzahl der Benutzer,",
-            "Benutzer Liste,",
-            "In der Rubrik System:",
-            "System Auslastung,",
-            "System Updates,",
-            "oder System Uptime.",
-            "In der Rubrik Sonstiges:",
-            "Random Facts.",
-        );
+        = [
+            'In der Rubrik Minecraft:',
+            'Anzahl der Spieler,',
+            'Spieler Liste,',
+            'oder Version des Servers.',
+            'In der Rubrik TeamSpeak:',
+            'Anzahl der Benutzer,',
+            'Benutzer Liste,',
+            'In der Rubrik System:',
+            'System Auslastung,',
+            'System Updates,',
+            'oder System Uptime.',
+            'In der Rubrik Sonstiges:',
+            'Random Facts.',
+        ];
 
     /**
      * Runs the Responder.
      *
      * @return $this
      */
-    public function run()
+    public function run(): ResponderInterface
     {
         $responses = $this->config->get('response', 'help');
         if (is_null($responses) || empty($responses)) {
-            $responses = array('Folgende Funktionen sind verfügbar:');
+            $responses = ['Folgende Funktionen sind verfügbar:'];
         }
 
         $this->response
@@ -71,9 +72,10 @@ class Help extends AbstractResponder implements ResponderInterface
                 "- Gibt es System Updates?\n".
                 "- Wie ist die System Uptime?\r\n".
                 "Sonstiges:\r\n".
-                "- Gib mir einen Random Fact."
+                '- Gib mir einen Random Fact.'
             )
-            ->endSession(false);
+            ->endSession(false)
+        ;
 
         return $this;
     }

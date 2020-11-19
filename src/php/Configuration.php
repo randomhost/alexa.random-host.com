@@ -8,9 +8,10 @@ use RuntimeException;
  * Configuration.
  *
  * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2017 random-host.com
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://composer.random-host.com
+ * @copyright 2020 random-host.tv
+ * @license   https://opensource.org/licenses/BSD-3-Clause  BSD License (3 Clause)
+ *
+ * @see      https://random-host.tv
  */
 class Configuration
 {
@@ -33,11 +34,12 @@ class Configuration
      *
      * @param string $config Optional: Configuration file name without file extension.
      */
-    public function __construct($config = 'config')
+    public function __construct(string $config = 'config')
     {
         $this
             ->loadConfig($config)
-            ->loadMandatoryParameters();
+            ->loadMandatoryParameters()
+        ;
     }
 
     /**
@@ -45,7 +47,7 @@ class Configuration
      *
      * @return string
      */
-    public function getAppId()
+    public function getAppId(): string
     {
         return $this->appId;
     }
@@ -58,9 +60,9 @@ class Configuration
      * @param string $category Category key.
      * @param string $key      Setting key.
      *
-     * @return mixed|null
+     * @return null|mixed
      */
-    public function get($category, $key)
+    public function get(string $category, string $key)
     {
         if (!array_key_exists($category, $this->json)
             || !array_key_exists($key, $this->json[$category])
@@ -69,8 +71,6 @@ class Configuration
         }
 
         return $this->json[$category][$key];
-
-
     }
 
     /**
@@ -78,11 +78,11 @@ class Configuration
      *
      * @param string $fileName Configuration file name without file extension.
      *
-     * @return $this
-     *
      * @throws RuntimeException Thrown in case the config file could not be loaded.
+     *
+     * @return $this
      */
-    private function loadConfig($fileName)
+    private function loadConfig(string $fileName): self
     {
         if (1 !== preg_match('/^[a-zA-Z_0-9\-]+(\.[a-zA-Z_0-9\-]+)?$/', $fileName)) {
             throw new RuntimeException(
@@ -92,17 +92,17 @@ class Configuration
 
         $filePath = __DIR__.'/../data/'.$fileName.'.json';
 
-        $rawJson = file_get_contents($filePath);
+        $rawJson = @file_get_contents($filePath);
         if (false === $rawJson) {
             throw new RuntimeException(
-                "Failed to load config file at ${filePath}"
+                "Failed to load config file at {$filePath}"
             );
         }
 
         $json = json_decode($rawJson, true);
         if (is_null($json)) {
             throw new RuntimeException(
-                "Failed to parse config file at ${filePath}"
+                "Failed to parse config file at {$filePath}"
             );
         }
 
@@ -116,11 +116,11 @@ class Configuration
      *
      * @return $this
      */
-    private function loadMandatoryParameters()
+    private function loadMandatoryParameters(): self
     {
         if (empty($this->json['common']['appId'])) {
             throw new RuntimeException(
-                "No app ID configured. Please check your config."
+                'No app ID configured. Please check your config.'
             );
         }
         $this->appId = $this->json['common']['appId'];

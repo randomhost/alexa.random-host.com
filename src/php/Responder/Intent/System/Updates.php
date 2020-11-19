@@ -10,53 +10,55 @@ use RuntimeException;
  * Updates Intent.
  *
  * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2017 random-host.com
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://composer.random-host.com
+ * @copyright 2020 random-host.tv
+ * @license   https://opensource.org/licenses/BSD-3-Clause  BSD License (3 Clause)
+ *
+ * @see       https://random-host.tv
  */
 class Updates extends AbstractResponder implements ResponderInterface
 {
     /**
      * Pending package upgrades.
      */
-    const PACKAGE_UPGRADE = 'upgrade';
+    private const PACKAGE_UPGRADE = 'upgrade';
 
     /**
      * Pending new packages.
      */
-    const PACKAGE_NEW = 'new';
+    private const PACKAGE_NEW = 'new';
 
     /**
      * Pending package removals.
      */
-    const PACKAGE_REMOVE = 'remove';
+    private const PACKAGE_REMOVE = 'remove';
 
     /**
      * Packages kept at their current version.
      */
-    const PACKAGE_KEEP = 'keep';
+    private const PACKAGE_KEEP = 'keep';
 
     /**
      * Runs the Responder.
      *
      * @return $this
      */
-    public function run()
+    public function run(): ResponderInterface
     {
         try {
             $updates = $this->fetchPackageUpdates();
 
-            if ($updates[self::PACKAGE_UPGRADE] === 0
-                && $updates[self::PACKAGE_NEW] === 0
-                && $updates[self::PACKAGE_REMOVE] === 0
-                && $updates[self::PACKAGE_KEEP] === 0
+            if (0 === $updates[self::PACKAGE_UPGRADE]
+                && 0 === $updates[self::PACKAGE_NEW]
+                && 0 === $updates[self::PACKAGE_REMOVE]
+                && 0 === $updates[self::PACKAGE_KEEP]
             ) {
                 $noUpdates = 'Es stehen keine Updates zur Verfügung.';
 
                 $this->response
                     ->respondSSML($this->withSound(self::SOUND_CONFIRM, $noUpdates))
                     ->withCard('System Updates', $noUpdates)
-                    ->endSession(true);
+                    ->endSession(true)
+                ;
 
                 return $this;
             }
@@ -74,14 +76,15 @@ class Updates extends AbstractResponder implements ResponderInterface
                         "Aktualisierte Pakete: %u\r\n".
                         "Neue Pakete: %u\r\n".
                         "Entfernte Pakete: %u\r\n".
-                        "Beibehaltene Pakete: %u",
+                        'Beibehaltene Pakete: %u',
                         $updates[self::PACKAGE_UPGRADE],
                         $updates[self::PACKAGE_NEW],
                         $updates[self::PACKAGE_REMOVE],
                         $updates[self::PACKAGE_KEEP]
                     )
                 )
-                ->endSession(true);
+                ->endSession(true)
+            ;
         } catch (RuntimeException $e) {
             $this->response
                 ->respondSSML(
@@ -90,7 +93,8 @@ class Updates extends AbstractResponder implements ResponderInterface
                         'Die verfügbaren Updates konnten leider nicht ermittelt werden.'
                     )
                 )
-                ->endSession(true);
+                ->endSession(true)
+            ;
         }
 
         return $this;
@@ -101,7 +105,7 @@ class Updates extends AbstractResponder implements ResponderInterface
      *
      * @return int[]
      */
-    private function fetchPackageUpdates()
+    private function fetchPackageUpdates(): array
     {
         $rawResult = shell_exec('apt-get --just-print upgrade');
 
@@ -111,18 +115,18 @@ class Updates extends AbstractResponder implements ResponderInterface
             $matches
         );
 
-        if ($updates !== 1) {
+        if (1 !== $updates) {
             throw new RuntimeException(
                 'Could not fetch package updates'
             );
         }
 
-        return array(
-            self::PACKAGE_UPGRADE => (int)$matches[1],
-            self::PACKAGE_NEW => (int)$matches[2],
-            self::PACKAGE_REMOVE => (int)$matches[3],
-            self::PACKAGE_KEEP => (int)$matches[4],
-        );
+        return [
+            self::PACKAGE_UPGRADE => (int) $matches[1],
+            self::PACKAGE_NEW => (int) $matches[2],
+            self::PACKAGE_REMOVE => (int) $matches[3],
+            self::PACKAGE_KEEP => (int) $matches[4],
+        ];
     }
 
     /**
@@ -132,18 +136,18 @@ class Updates extends AbstractResponder implements ResponderInterface
      *
      * @return string
      */
-    private function getPhrasePackages($updates)
+    private function getPhrasePackages(array $updates): string
     {
-        $parts = array(
+        $parts = [
             $this->getPhrasePackageUpgrade($updates[self::PACKAGE_UPGRADE]),
             $this->getPhrasePackageNew($updates[self::PACKAGE_NEW]),
             $this->getPhrasePackageRemove($updates[self::PACKAGE_REMOVE]),
             $this->getPhrasePackageKeep($updates[self::PACKAGE_KEEP]),
-        );
+        ];
 
         $phrase = implode(' ', $parts);
 
-        if (trim($phrase) === '') {
+        if ('' === trim($phrase)) {
             return 'Es stehen keine Updates zur Verfügung.';
         }
 
@@ -157,17 +161,17 @@ class Updates extends AbstractResponder implements ResponderInterface
      *
      * @return string
      */
-    private function getPhrasePackageUpgrade($packages)
+    private function getPhrasePackageUpgrade(int $packages): string
     {
-        if ($packages === 0) {
+        if (0 === $packages) {
             return '';
         }
 
-        if ($packages === 1) {
+        if (1 === $packages) {
             return 'Es steht ein Update aus.';
         }
 
-        return "Es stehen ${packages} Updates aus.";
+        return "Es stehen {$packages} Updates aus.";
     }
 
     /**
@@ -177,17 +181,17 @@ class Updates extends AbstractResponder implements ResponderInterface
      *
      * @return string
      */
-    private function getPhrasePackageNew($packages)
+    private function getPhrasePackageNew(int $packages): string
     {
-        if ($packages === 0) {
+        if (0 === $packages) {
             return '';
         }
 
-        if ($packages === 1) {
+        if (1 === $packages) {
             return 'Ein Paket kommt neu hinzu.';
         }
 
-        return "${packages} Pakete kommen neu hinzu.";
+        return "{$packages} Pakete kommen neu hinzu.";
     }
 
     /**
@@ -197,17 +201,17 @@ class Updates extends AbstractResponder implements ResponderInterface
      *
      * @return string
      */
-    private function getPhrasePackageRemove($packages)
+    private function getPhrasePackageRemove(int $packages): string
     {
-        if ($packages === 0) {
+        if (0 === $packages) {
             return '';
         }
 
-        if ($packages === 1) {
+        if (1 === $packages) {
             return 'Ein Paket wird entfernt.';
         }
 
-        return "${packages} Pakete werden entfernt.";
+        return "{$packages} Pakete werden entfernt.";
     }
 
     /**
@@ -217,16 +221,16 @@ class Updates extends AbstractResponder implements ResponderInterface
      *
      * @return string
      */
-    private function getPhrasePackageKeep($packages)
+    private function getPhrasePackageKeep(int $packages): string
     {
-        if ($packages === 0) {
+        if (0 === $packages) {
             return '';
         }
 
-        if ($packages === 1) {
+        if (1 === $packages) {
             return 'Ein Paket wird nicht aktualisiert.';
         }
 
-        return "${packages} Pakete werden nicht aktualisiert.";
+        return "{$packages} Pakete werden nicht aktualisiert.";
     }
 }

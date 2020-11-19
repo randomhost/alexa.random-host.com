@@ -14,12 +14,14 @@ use randomhost\Alexa\Responder\Intent\Builtin\Help;
 use randomhost\Alexa\Responder\Intent\Builtin\Stop;
 use randomhost\Alexa\Responder\Intent\Fun\RandomFact;
 use randomhost\Alexa\Responder\Intent\Fun\Surprise;
+use randomhost\Alexa\Responder\Intent\Minecraft\AbstractMinecraft;
 use randomhost\Alexa\Responder\Intent\Minecraft\PlayerCount as MinecraftPlayerCount;
 use randomhost\Alexa\Responder\Intent\Minecraft\PlayerList as MinecraftPlayerList;
 use randomhost\Alexa\Responder\Intent\Minecraft\Version as MinecraftVersion;
 use randomhost\Alexa\Responder\Intent\System\Load;
 use randomhost\Alexa\Responder\Intent\System\Updates;
 use randomhost\Alexa\Responder\Intent\System\Uptime;
+use randomhost\Alexa\Responder\Intent\TeamSpeak3\AbstractTeamSpeak3;
 use randomhost\Alexa\Responder\Intent\TeamSpeak3\UserCount as TeamSpeak3UserCount;
 use randomhost\Alexa\Responder\Intent\TeamSpeak3\UserList as TeamSpeak3UserList;
 use randomhost\Alexa\Responder\Launch\Greeting;
@@ -34,9 +36,10 @@ use TeamSpeak3_Node_Server;
  * Controller for Alexa skills.
  *
  * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2017 random-host.com
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://composer.random-host.com
+ * @copyright 2020 random-host.tv
+ * @license   https://opensource.org/licenses/BSD-3-Clause  BSD License (3 Clause)
+ *
+ * @see       https://random-host.tv
  */
 class Controller
 {
@@ -48,11 +51,18 @@ class Controller
     private $response;
 
     /**
+     * Configuration instance.
+     *
+     * @var Configuration
+     */
+    private $configuration;
+
+    /**
      * Controller constructor.
      *
      * @param string $config Optional: Configuration file name without file extension.
      */
-    public function __construct($config = 'config')
+    public function __construct(string $config = 'config')
     {
         $this->response = new Response();
         $this->configuration = new Configuration($config);
@@ -61,7 +71,7 @@ class Controller
     /**
      * Runs the controller.
      */
-    public function run()
+    public function run(): void
     {
         try {
             $rawRequest = $this->fetchRawRequest();
@@ -69,17 +79,19 @@ class Controller
             $request = $this->buildRequest($rawRequest);
 
             switch (true) {
-                case ($request instanceof Intent):
+                case $request instanceof Intent:
                     $responder = $this->buildResponderForIntentRequest($request);
                     $this->sendResponse($responder);
+
                     break;
-                case ($request instanceof Launch):
+                case $request instanceof Launch:
                     $responder = new Greeting();
                     $this->sendResponse($responder);
+
                     break;
-                case ($request instanceof SessionEnded):
+                case $request instanceof SessionEnded:
                     // log sessions which ended due to processing errors
-                    if ($request->getReason() === 'ERROR') {
+                    if ('ERROR' === $request->getReason()) {
                         trigger_error(
                             'Session ended with error',
                             E_USER_WARNING
@@ -87,6 +99,7 @@ class Controller
                     }
 
                     $this->renderResponse(null);
+
                     break;
                 default:
                     trigger_error(
@@ -104,14 +117,14 @@ class Controller
     /**
      * Returns the raw request body.
      *
-     * @return string
-     *
      * @throws InvalidArgumentException Thrown in case the request body is missing.
+     *
+     * @return string
      */
-    protected function fetchRawRequest()
+    protected function fetchRawRequest(): string
     {
         $rawRequest = file_get_contents('php://input');
-        if (false === $rawRequest) {
+        if (empty($rawRequest)) {
             throw new InvalidArgumentException(
                 'Invalid call. No request body.'
             );
@@ -127,15 +140,14 @@ class Controller
      *
      * @return Request
      */
-    protected function buildRequest($rawData)
+    protected function buildRequest(string $rawData): Request
     {
         $factory = new RequestFactory();
-        $request = $factory->getInstanceForData(
+
+        return $factory->getInstanceForData(
             $rawData,
             $this->configuration->getAppId()
         );
-
-        return $request;
     }
 
     /**
@@ -145,7 +157,7 @@ class Controller
      *
      * @return ResponderInterface
      */
-    protected function buildResponderForIntentRequest(Intent $request)
+    protected function buildResponderForIntentRequest(Intent $request): ResponderInterface
     {
         $intentName = $request->getIntentName();
 
@@ -156,7 +168,7 @@ class Controller
                 return new Cancel();
             case 'AMAZON.StopIntent':
                 return new Stop();
-            case (strpos($intentName, 'Minecraft') === 0):
+            case 0 === strpos($intentName, 'Minecraft'):
                 $minecraftHost = $this->configuration->get('minecraft', 'host');
                 if (is_null($minecraftHost)) {
                     return new Unsupported();
@@ -165,7 +177,7 @@ class Controller
                 $mcData = $mcStatus->query(true);
 
                 return $this->buildResponderForMinecraftIntent($intentName, $mcData);
-            case (strpos($intentName, 'TeamSpeak') === 0):
+            case 0 === strpos($intentName, 'TeamSpeak'):
                 $ts3Uri = $this->configuration->get('teamspeak', 'uri');
                 if (is_null($ts3Uri)) {
                     return new Unsupported();
@@ -204,18 +216,21 @@ class Controller
      *
      * @return MinecraftPlayerCount|MinecraftPlayerList|MinecraftVersion
      */
-    protected function buildResponderForMinecraftIntent($intentName, $data)
+    protected function buildResponderForMinecraftIntent(string $intentName, array $data): AbstractMinecraft
     {
         switch ($intentName) {
             case 'MinecraftPlayerCountIntent':
                 $responder = new MinecraftPlayerCount($data);
+
                 break;
             case 'MinecraftPlayerListIntent':
                 $responder = new MinecraftPlayerList($data);
+
                 break;
             case 'MinecraftVersionIntent':
             default:
                 $responder = new MinecraftVersion($data);
+
                 break;
         }
 
@@ -228,17 +243,19 @@ class Controller
      * @param string                 $intentName Intent name.
      * @param TeamSpeak3_Node_Server $ts3        TeamSpeak3_Node_Host instance.
      *
-     * @return TeamSpeak3UserCount
+     * @return TeamSpeak3UserList|TeamSpeak3UserCount
      */
-    protected function buildResponderForTeamSpeak3Intent($intentName, TeamSpeak3_Node_Server $ts3)
+    protected function buildResponderForTeamSpeak3Intent(string $intentName, TeamSpeak3_Node_Server $ts3): AbstractTeamSpeak3
     {
         switch ($intentName) {
             case 'TeamSpeakUserListIntent':
                 $responder = new TeamSpeak3UserList($ts3);
+
                 break;
             case 'TeamSpeakUserCountIntent':
             default:
                 $responder = new TeamSpeak3UserCount($ts3);
+
                 break;
         }
 
@@ -250,12 +267,13 @@ class Controller
      *
      * @param ResponderInterface $responder ResponderInterface implementation.
      */
-    protected function sendResponse(ResponderInterface $responder)
+    protected function sendResponse(ResponderInterface $responder): void
     {
         $responder
             ->setConfiguration($this->configuration)
             ->setResponse($this->response)
-            ->run();
+            ->run()
+        ;
 
         $this->renderResponse($this->response->render());
     }
@@ -265,7 +283,7 @@ class Controller
      *
      * @param mixed $data Response data.
      */
-    protected function renderResponse($data)
+    protected function renderResponse($data): void
     {
         header('Content-Type: application/json');
         echo json_encode($data);

@@ -2,22 +2,25 @@
 
 namespace randomhost\Alexa\Responder\Intent\TeamSpeak3;
 
+use randomhost\Alexa\Responder\ResponderInterface;
+
 /**
  * Handles the TeamSpeakUserCount intent.
  *
  * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2017 random-host.com
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://composer.random-host.com
+ * @copyright 2020 random-host.tv
+ * @license   https://opensource.org/licenses/BSD-3-Clause  BSD License (3 Clause)
+ *
+ * @see       https://random-host.tv
  */
-class UserCount extends AbstractTeamSpeak3
+class UserCount extends AbstractTeamSpeak3 implements ResponderInterface
 {
     /**
      * Runs the Responder.
      *
      * @return $this
      */
-    public function run()
+    public function run(): ResponderInterface
     {
         $clients = $this->ts3->clientList();
         if (!is_array($clients)) {
@@ -28,26 +31,27 @@ class UserCount extends AbstractTeamSpeak3
                         'Tut mir leid. Der TeamSpeak Server hat leider nicht geantwortet.'
                     )
                 )
-                ->endSession(true);
+                ->endSession(true)
+            ;
 
             return $this;
         }
 
         $responses = $this->config->get('response', 'teamspeakUserCount');
         if (is_null($responses) || empty($responses)) {
-            $responses = array(
-                "noUsers" => array("Es sind keine Benutzer auf dem Server."),
-                "oneUser" => array("Es ist genau ein Benutzer auf dem Server."),
-                "nUsers" => array("Es sind %u Benutzer auf dem Server."),
-            );
+            $responses = [
+                'noUsers' => ['Es sind keine Benutzer auf dem Server.'],
+                'oneUser' => ['Es ist genau ein Benutzer auf dem Server.'],
+                'nUsers' => ['Es sind %u Benutzer auf dem Server.'],
+            ];
         }
 
         $clientCount = 0;
         foreach ($clients as $client) {
-            if ($client["client_type"]) {
+            if ($client['client_type']) {
                 continue;
             }
-            $clientCount++;
+            ++$clientCount;
         }
 
         $this->response->withCard(
@@ -61,7 +65,7 @@ class UserCount extends AbstractTeamSpeak3
         );
 
         switch (true) {
-            case ($clientCount <= 0):
+            case $clientCount <= 0:
                 $this->response
                     ->respondSSML(
                         $this->withSound(
@@ -69,10 +73,11 @@ class UserCount extends AbstractTeamSpeak3
                             $this->randomizeResponseText($responses['noUsers'])
                         )
                     )
-                    ->endSession(true);
+                    ->endSession(true)
+                ;
 
                 return $this;
-            case ($clientCount === 1):
+            case 1 === $clientCount:
                 $this->response
                     ->respondSSML(
                         $this->withSound(
@@ -80,7 +85,8 @@ class UserCount extends AbstractTeamSpeak3
                             $this->randomizeResponseText($responses['oneUser'])
                         )
                     )
-                    ->endSession(true);
+                    ->endSession(true)
+                ;
 
                 return $this;
             default:
@@ -94,7 +100,8 @@ class UserCount extends AbstractTeamSpeak3
                             )
                         )
                     )
-                    ->endSession(true);
+                    ->endSession(true)
+                ;
 
                 return $this;
         }

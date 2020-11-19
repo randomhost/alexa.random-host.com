@@ -10,9 +10,10 @@ use RuntimeException;
  * RandomFact Intent.
  *
  * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2017 random-host.com
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://composer.random-host.com
+ * @copyright 2020 random-host.tv
+ * @license   https://opensource.org/licenses/BSD-3-Clause  BSD License (3 Clause)
+ *
+ * @see       https://random-host.tv
  */
 class RandomFact extends AbstractResponder implements ResponderInterface
 {
@@ -21,7 +22,7 @@ class RandomFact extends AbstractResponder implements ResponderInterface
      *
      * @return $this
      */
-    public function run()
+    public function run(): ResponderInterface
     {
         $randomFacts = $this->config->get('response', 'randomFact');
         if (is_null($randomFacts) || empty($randomFacts)) {
@@ -31,9 +32,9 @@ class RandomFact extends AbstractResponder implements ResponderInterface
                         self::SOUND_ERROR,
                         'Es wurden leider keine Facts configuriert.'
                     )
-
                 )
-                ->endSession(true);
+                ->endSession(true)
+            ;
 
             return $this;
         }
@@ -50,7 +51,7 @@ class RandomFact extends AbstractResponder implements ResponderInterface
      *
      * @return $this
      */
-    private function setupResponse($randomFact)
+    private function setupResponse(array $randomFact): ResponderInterface
     {
         $speech = '';
 
@@ -90,7 +91,8 @@ class RandomFact extends AbstractResponder implements ResponderInterface
                     $speech
                 )
             )
-            ->endSession(true);
+            ->endSession(true)
+        ;
 
         return $this;
     }

@@ -9,9 +9,10 @@ use randomhost\Alexa\Responder\ResponderInterface;
  * Commands responder.
  *
  * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2017 random-host.com
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://composer.random-host.com
+ * @copyright 2020 random-host.tv
+ * @license   https://opensource.org/licenses/BSD-3-Clause  BSD License (3 Clause)
+ *
+ * @see       https://random-host.tv
  */
 class Greeting extends AbstractResponder implements ResponderInterface
 {
@@ -20,13 +21,14 @@ class Greeting extends AbstractResponder implements ResponderInterface
      *
      * @return $this
      */
-    public function run()
+    public function run(): ResponderInterface
     {
         $greetings = $this->config->get('response', 'greeting');
         if (is_null($greetings) || empty($greetings)) {
             $this->response
                 ->respond('Hallo.')
-                ->endSession(false);
+                ->endSession(false)
+            ;
 
             return $this;
         }
@@ -38,7 +40,8 @@ class Greeting extends AbstractResponder implements ResponderInterface
                     $this->randomizeResponseText($greetings)
                 )
             )
-            ->endSession(false);
+            ->endSession(false)
+        ;
 
         return $this;
     }

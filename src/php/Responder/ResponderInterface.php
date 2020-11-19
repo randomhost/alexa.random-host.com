@@ -9,9 +9,10 @@ use randomhost\Alexa\Response\Response;
  * Interface for Responder implementations.
  *
  * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2017 random-host.com
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://composer.random-host.com
+ * @copyright 2020 random-host.tv
+ * @license   https://opensource.org/licenses/BSD-3-Clause  BSD License (3 Clause)
+ *
+ * @see       https://random-host.tv
  */
 interface ResponderInterface
 {
@@ -22,7 +23,7 @@ interface ResponderInterface
      *
      * @return $this
      */
-    public function setResponse(Response $response);
+    public function setResponse(Response $response): ResponderInterface;
 
     /**
      * Sets the Configuration instance.
@@ -31,12 +32,12 @@ interface ResponderInterface
      *
      * @return $this
      */
-    public function setConfiguration(Configuration $config);
+    public function setConfiguration(Configuration $config): ResponderInterface;
 
     /**
      * Runs the Responder.
      *
      * @return $this
      */
-    public function run();
+    public function run(): ResponderInterface;
 }

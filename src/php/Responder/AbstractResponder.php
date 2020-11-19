@@ -10,31 +10,32 @@ use RuntimeException;
  * Abstract base class for Responder implementation.
  *
  * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2017 random-host.com
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://composer.random-host.com
+ * @copyright 2020 random-host.tv
+ * @license   https://opensource.org/licenses/BSD-3-Clause  BSD License (3 Clause)
+ *
+ * @see       https://random-host.tv
  */
 abstract class AbstractResponder implements ResponderInterface
 {
     /**
      * Plays a "confirmation" sound.
      */
-    const SOUND_CONFIRM = "confirm";
+    public const SOUND_CONFIRM = 'confirm';
 
     /**
      * Plays an "error" sound.
      */
-    const SOUND_ERROR = "error";
+    public const SOUND_ERROR = 'error';
 
     /**
      * Plays a "ready" sound.
      */
-    const SOUND_READY = "ready";
+    public const SOUND_READY = 'ready';
 
     /**
      * Plays a "stop" sound.
      */
-    const SOUND_STOP = "stop";
+    public const SOUND_STOP = 'stop';
 
     /**
      * Valid sound names.
@@ -42,12 +43,12 @@ abstract class AbstractResponder implements ResponderInterface
      * @var string[]
      */
     protected $validSounds
-        = array(
+        = [
             self::SOUND_CONFIRM,
             self::SOUND_ERROR,
             self::SOUND_READY,
             self::SOUND_STOP,
-        );
+        ];
 
     /**
      * Configuration instance.
@@ -84,7 +85,7 @@ abstract class AbstractResponder implements ResponderInterface
      *
      * @return $this
      */
-    public function setResponse(Response $response)
+    public function setResponse(Response $response): ResponderInterface
     {
         $this->response = $response;
 
@@ -98,13 +99,14 @@ abstract class AbstractResponder implements ResponderInterface
      *
      * @return $this
      */
-    public function setConfiguration(Configuration $config)
+    public function setConfiguration(Configuration $config): ResponderInterface
     {
         $this->config = $config;
 
         $this
             ->determineAudioBaseUrl()
-            ->determineImageBaseUrl();
+            ->determineImageBaseUrl()
+        ;
 
         return $this;
     }
@@ -112,7 +114,7 @@ abstract class AbstractResponder implements ResponderInterface
     /**
      * Returns a random response from the given array of responses.
      *
-     * @param array $responses
+     * @param array $responses Array of responses.
      *
      * @return mixed
      */
@@ -129,7 +131,7 @@ abstract class AbstractResponder implements ResponderInterface
      *
      * @return string String with SSML markup.
      */
-    protected function withSound($sound, $response)
+    protected function withSound(string $sound, string $response): string
     {
         if (!in_array($sound, $this->validSounds)) {
             throw new RuntimeException('Invalid sound name');
@@ -149,25 +151,21 @@ abstract class AbstractResponder implements ResponderInterface
      *
      * @return string String with SSML markup.
      */
-    protected function buildSoundTag($sound)
+    protected function buildSoundTag(string $sound): string
     {
-        $tag = sprintf(
+        return sprintf(
             '<audio src="%1$s%2$s.mp3" />',
             $this->audioBaseUrl,
             $sound
         );
-
-        return $tag;
     }
 
     /**
      * Returns the full URL for the given image file.
      *
      * @param string $image Image file name.
-     *
-     * @return string
      */
-    protected function buildImageUrl($image)
+    protected function buildImageUrl(string $image): string
     {
         return $this->imageBaseUrl.$image;
     }
@@ -177,7 +175,7 @@ abstract class AbstractResponder implements ResponderInterface
      *
      * @return $this
      */
-    private function determineAudioBaseUrl()
+    private function determineAudioBaseUrl(): self
     {
         $baseUrl = $this->config->get('audio', 'baseUrl');
         if (is_null($baseUrl) || empty($baseUrl)) {
@@ -194,7 +192,7 @@ abstract class AbstractResponder implements ResponderInterface
      *
      * @return $this
      */
-    private function determineImageBaseUrl()
+    private function determineImageBaseUrl(): self
     {
         $baseUrl = $this->config->get('image', 'baseUrl');
         if (is_null($baseUrl) || empty($baseUrl)) {
