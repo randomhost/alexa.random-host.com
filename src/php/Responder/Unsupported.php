@@ -9,7 +9,7 @@ namespace randomhost\Alexa\Responder;
  * @copyright 2020 random-host.tv
  * @license   https://opensource.org/licenses/BSD-3-Clause  BSD License (3 Clause)
  *
- * @see      https://random-host.tv
+ * @see       https://random-host.tv
  */
 class Unsupported extends AbstractResponder implements ResponderInterface
 {

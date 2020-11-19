@@ -1,39 +1,51 @@
-alexa.random-host.com
-=====================
+alexa.random-host.tv
+====================
 
-This package provides skills for [Amazon's Alexa][1], custom tailored to [random-host.com][2].
+Dieses Paket stellt den [Random-Host.tv][1] Skill für [Amazon's Alexa][2] zur Verfügung.
 
-**Note:** This software is **not** designed to be used outside of the random-host.com domain. You
-may use it for inspiration to write your own custom Alexa skills. Don't expect it to be anything
-more than a blueprint, though.
+**Hinweis:** Diese Software ist **nicht** dazu geeignet außerhalb der random-host.tv domain
+verwendet zu werden. Du kannst sie jedoch als Inspirationsquelle für deine eigenen Alexa Skills
+verwenden.
 
-**Status:** This software is currently **work in progress**. For now, only **German** is supported.
+Verfügbare Befehle
+------------------
 
-Features
---------
+### Minecraft
 
-* *Alexa, ask random-host **how many players** are on the **Minecraft server**?*
-* *Alexa, ask random-host **which players** are on the **Minecraft server**?*
-* *Alexa, ask random-host **which version** is the **Minecraft server**?*
-* *Alexa, ask random-host **how many users** are on the **TeamSpeak server**?*
-* *Alexa, ask random-host **which users** are on the **TeamSpeak server**?*
-* *Alexa, ask random-host for **a random fact**.*
-* *Alexa, ask random-host for the **system uptime**.*
-* *Alexa, ask random-host for the **system load**.*
-* *Alexa, ask random-host for **available package updates**.*
+* *Alexa, frag Random-Host **wie viele Spieler** sind auf dem **Minecraft Server**?*
+* *Alexa, frag Random-Host **welche Spieler** sind auf dem **Minecraft Server**?*
+* *Alexa, frag Random-Host **welche Version** hat der **Minecraft Server**?*
 
-Additional Resources
---------------------
+### TeamSpeak
 
-* [Amazon Alexa PHP Library][3]
-* [Amazon's Alexa Skill Kit][4]
+* *Alexa, frag Random-Host **wie viele Benutzer** sind auf dem **TeamSpeak Server**?*
+* *Alexa, frag Random-Host **welche Benutzer** sind auf dem **TeamSpeak Server**?*
 
-License
--------
+### System
 
-See LICENSE.txt for full license details.
+* *Alexa, frag Random-Host nach der **System Uptime**.*
+* *Alexa, frag Random-Host nach der **System Auslastung**.*
+* *Alexa, frag Random-Host nach **verfügbaren Paket Updates**.*
 
-[1]: https://www.amazon.com/alexa
-[2]: https://www.random-host.com/
+### Verschiedenes
+
+* *Alexa, frag Random-Host nach **Random Fact**.*
+
+Weitere Ressourcen
+------------------
+
+* [Amazon Alexa PHP Bibliothek][3]
+* [Amazon Developer Services][4]
+* [Amazon Alexa Skill Kit][5]
+
+Lizenz
+------
+
+Siehe [LICENSE.txt][6] für Details zur Lizenz.
+
+[1]: https://random-host.tv/
+[2]: https://www.amazon.com/alexa
 [3]: https://github.com/randomhost/alexa
-[4]: https://developer.amazon.com/alexa-skills-kit
+[4]: https://developer.amazon.com/
+[5]: https://developer.amazon.com/alexa-skills-kit
+[6]: LICENSE.txt
