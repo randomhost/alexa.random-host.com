@@ -1,7 +1,7 @@
 {
     "name": "randomhost/alexa.random-host.tv",
-    "type": "library",
-    "description": "Provides custom skills for Amazon's Alexa.",
+    "type": "project",
+    "description": "Provides the custom Random-Host.tv skill for Amazon's Alexa.",
     "keywords": [
         "Alexa"
     ],

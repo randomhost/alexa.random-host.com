@@ -109,8 +109,17 @@ class Controller
 
                     $this->renderResponse(null);
             }
+        } catch (InvalidArgumentException $e) {
+            header('HTTP/1.1 400 Bad Request');
+            header('Status: 400 Bad Request');
+            trigger_error($e->getMessage(), E_USER_NOTICE);
+            exit;
         } catch (Exception $e) {
-            trigger_error($e->getMessage());
+            header('HTTP/1.1 503 Service Temporarily Unavailable');
+            header('Status: 503 Service Temporarily Unavailable');
+            header('Retry-After: 60');
+            trigger_error($e->getMessage(), E_USER_WARNING);
+            exit;
         }
     }
 
@@ -243,10 +252,12 @@ class Controller
      * @param string                 $intentName Intent name.
      * @param TeamSpeak3_Node_Server $ts3        TeamSpeak3_Node_Host instance.
      *
-     * @return TeamSpeak3UserList|TeamSpeak3UserCount
+     * @return TeamSpeak3UserCount|TeamSpeak3UserList
      */
-    protected function buildResponderForTeamSpeak3Intent(string $intentName, TeamSpeak3_Node_Server $ts3): AbstractTeamSpeak3
-    {
+    protected function buildResponderForTeamSpeak3Intent(
+        string $intentName,
+        TeamSpeak3_Node_Server $ts3
+    ): AbstractTeamSpeak3 {
         switch ($intentName) {
             case 'TeamSpeakUserListIntent':
                 $responder = new TeamSpeak3UserList($ts3);
